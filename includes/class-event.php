@@ -202,6 +202,17 @@ class SOF_Pledgeball_Event {
 		// Handle all Pledgeball Events.
 		foreach ( $pledgeball_events as $pledgeball_event ) {
 
+			// Skip sending data if mandatory Fields are missing.
+			if ( empty( $pledgeball_event['email'] ) ) {
+				continue;
+			}
+			if ( empty( $pledgeball_event['title'] ) ) {
+				continue;
+			}
+			if ( empty( $pledgeball_event['eventtype'] ) ) {
+				continue;
+			}
+
 			// Grab the Occurrence ID and remove it from the event data.
 			$occurrence_id = $pledgeball_event['occurrence_id'];
 			unset( $pledgeball_event['occurrence_id'] );
