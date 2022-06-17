@@ -6,6 +6,17 @@ Interacts with Pledgeball Client plugin.
 
 *SOF Pledgeball* is a WordPress plugin that interacts with Pledgeball Client plugin for Spirit of Football.
 
+### Requirements
+
+This plugin requires the following plugins:
+
+* CiviCRM
+* CiviCRM Profile Sync
+* CiviCRM Event Organiser
+* Event Organiser
+* Pledgeball Client
+* SOF Organisations
+
 ## Installation
 
 There are two ways to install from GitHub:
