@@ -96,6 +96,15 @@ class SOF_Pledgeball {
 	public $organisation;
 
 	/**
+	 * Form object.
+	 *
+	 * @since 1.0
+	 * @access public
+	 * @var object $form The Form object.
+	 */
+	public $form;
+
+	/**
 	 * Initialises this object.
 	 *
 	 * @since 1.0
@@ -171,6 +180,7 @@ class SOF_Pledgeball {
 		include SOF_PLEDGEBALL_PATH . 'includes/class-civicrm.php';
 		include SOF_PLEDGEBALL_PATH . 'includes/class-event.php';
 		include SOF_PLEDGEBALL_PATH . 'includes/class-organisation.php';
+		include SOF_PLEDGEBALL_PATH . 'includes/class-form.php';
 
 	}
 
@@ -189,6 +199,7 @@ class SOF_Pledgeball {
 		$this->civicrm = new SOF_Pledgeball_CiviCRM( $this );
 		$this->event = new SOF_Pledgeball_Event( $this );
 		$this->organisation = new SOF_Pledgeball_Organisation( $this );
+		$this->form = new SOF_Pledgeball_Form( $this );
 
 	}
 
