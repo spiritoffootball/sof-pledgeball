@@ -122,7 +122,7 @@ class SOF_Pledgeball_Mapping {
 		// Init basic Pledgeball Event data.
 		$pledgeball_event = [
 			'title' => $eo_event->post_title,
-			'description' => $eo_event->post_content,
+			'description' => get_the_excerpt( $eo_event->ID ),
 			'fixturesource' => 'sof',
 			'fixturesourceid' => $eo_event->ID,
 			'eventgroup' => SOF_PLEDGEBALL_EVENT_GROUP_ID,
@@ -159,6 +159,7 @@ class SOF_Pledgeball_Mapping {
 			$pledgeball_event['occurrence_id'] = $date['occurrence_id'];
 
 			// Overwrite dates.
+			// TODO: Use GMT for storage.
 			$start_date = new DateTime( $date['start'] );
 			$pledgeball_event['eventdate'] = $start_date->format( 'Y-m-d\TH:i:s' );
 			$end_date = new DateTime( $date['end'] );
@@ -205,8 +206,11 @@ class SOF_Pledgeball_Mapping {
 			}
 		}
 
-		// Apply Country code.
-		$location['countrycode'] = $country_code;
+		// Make sure 3-letter ISO Country code is empty.
+		$location['countrycode'] = '';
+
+		// Apply 2-letter ISO Country code.
+		$location['countrycode2'] = $country_code;
 
 		// Apply latitude and longitude.
 		$location['latitude'] = isset( $venue->lat ) ? $venue->lat : '';
