@@ -225,6 +225,16 @@ class SOF_Pledgeball_Event {
 			// Send the Event to Pledgeball.
 			$pledgeball_event_id = $this->plugin->pledgeball->remote->event_save( $pledgeball_event );
 
+			/*
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			error_log( print_r( [
+				'method' => __METHOD__,
+				'pledgeball_event_id' => $pledgeball_event_id,
+				//'backtrace' => $trace,
+			], true ) );
+			*/
+
 			// Add the ID if this Event correspondence doesn't already exist.
 			if ( empty( $meta[ $occurrence_id ] ) ) {
 				$meta[ $occurrence_id ] = $pledgeball_event_id;
