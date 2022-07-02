@@ -156,13 +156,13 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		/*
 		$e = new \Exception();
 		$trace = $e->getTraceAsString();
-		error_log( print_r( [
+		$this->plugin->log_error( [
 			'method' => __METHOD__,
 			'attr' => $attr,
 			'event_id' => $event_id,
 			'pledgeball_event_ids' => $pledgeball_event_ids,
 			//'backtrace' => $trace,
-		], true ) );
+		] );
 		*/
 
 		// Bail if we didn't get any Pledgeball Event IDs.
@@ -181,7 +181,7 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		$my_event = $this->plugin->pledgeball->remote->event_get_by_id( 9855 );
 		$e = new \Exception();
 		$trace = $e->getTraceAsString();
-		error_log( print_r( [
+		$this->plugin->log_error( [
 			'method' => __METHOD__,
 			'my_event' => $my_event,
 			//'backtrace' => $trace,
@@ -192,11 +192,11 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		$my_event = $this->plugin->pledgeball->remote->event_get_by_id( 9855 );
 		$e = new \Exception();
 		$trace = $e->getTraceAsString();
-		error_log( print_r( [
+		$this->plugin->log_error( [
 			'method' => __METHOD__,
 			'my_event' => $my_event,
 			//'backtrace' => $trace,
-		], true ) );
+		] );
 		*/
 
 		// Query again if it's not found.
@@ -208,11 +208,11 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 			/*
 			$e = new \Exception();
 			$trace = $e->getTraceAsString();
-			error_log( print_r( [
+			$this->plugin->log_error( [
 				'method' => __METHOD__,
 				'pledges' => $pledges,
 				//'backtrace' => $trace,
-			], true ) );
+			] );
 			*/
 
 			// Store for a week given how infrequently Pledge definitions are modified.
@@ -592,11 +592,11 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		/*
 		$e = new \Exception();
 		$trace = $e->getTraceAsString();
-		error_log( print_r( [
+		$this->plugin->log_error( [
 			'method' => __METHOD__,
 			'POST' => $_POST,
 			//'backtrace' => $trace,
-		], true ) );
+		] );
 		*/
 
 		// Extract "Event ID".
@@ -695,7 +695,7 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		/*
 		$e = new \Exception();
 		$trace = $e->getTraceAsString();
-		error_log( print_r( [
+		$this->plugin->log_error( [
 			'method' => __METHOD__,
 			'event_id' => $event_id,
 			'eventgroup' => SOF_PLEDGEBALL_EVENT_GROUP_ID,
@@ -708,7 +708,7 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 			'consent' => $consent ? 'y' : 'n',
 			'okemails' => $okemails === 1 ? 'y' : 'n',
 			//'backtrace' => $trace,
-		], true ) );
+		] );
 		*/
 
 		// Let's make an array of submission data.
@@ -725,25 +725,19 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		/*
 		$e = new \Exception();
 		$trace = $e->getTraceAsString();
-		error_log( print_r( [
+		$this->plugin->log_error( [
 			'method' => __METHOD__,
 			'submission' => $submission,
 			//'backtrace' => $trace,
-		], true ) );
+		] );
 		*/
 
-		///*
 		// Submit the Standalone Pledge.
 		$response = $this->plugin->pledgeball->remote->pledge_create( $submission );
 		if ( $response === false ) {
-			// TODO: Alter this fake success response.
-			// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
+			// Bail with default message.
 			wp_send_json( $data );
 		}
-		//*/
-
-		// Fake a response.
-		//$response = false;
 
 		/**
 		 * Broadcast that a submission has been completed.
@@ -805,11 +799,11 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		/*
 		$e = new \Exception();
 		$trace = $e->getTraceAsString();
-		error_log( print_r( [
+		$this->plugin->log_error( [
 			'method' => __METHOD__,
 			'POST' => $_POST,
 			//'backtrace' => $trace,
-		], true ) );
+		] );
 		*/
 
 		// Extract "Event ID".
@@ -819,11 +813,11 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		/*
 		$e = new \Exception();
 		$trace = $e->getTraceAsString();
-		error_log( print_r( [
+		$this->plugin->log_error( [
 			'method' => __METHOD__,
 			'event_id' => $event_id,
 			//'backtrace' => $trace,
-		], true ) );
+		] );
 		*/
 
 		if ( empty( $event_id ) ) {
@@ -913,7 +907,7 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		/*
 		$e = new \Exception();
 		$trace = $e->getTraceAsString();
-		error_log( print_r( [
+		$this->plugin->log_error( [
 			'method' => __METHOD__,
 			'eventid' => $event_id,
 			'first_name' => $first_name,
@@ -923,7 +917,7 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 			'consent' => $consent ? 'y' : 'n',
 			'okemails' => $okemails === 1 ? 'y' : 'n',
 			//'backtrace' => $trace,
-		], true ) );
+		] );
 		*/
 
 		// Let's make an array of submission data.
@@ -986,13 +980,13 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		/*
 		$e = new \Exception();
 		$trace = $e->getTraceAsString();
-		error_log( print_r( [
+		$this->plugin->log_error( [
 			'method' => __METHOD__,
 			'url' => $url,
 			'args' => $args,
 			'wp_get_referer' => wp_get_referer(),
 			//'backtrace' => $trace,
-		], true ) );
+		] );
 		*/
 
 		// Redirect to prevent re-submission.

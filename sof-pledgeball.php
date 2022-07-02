@@ -39,6 +39,11 @@ if ( ! defined( 'SOF_PLEDGEBALL_PATH' ) ) {
 	define( 'SOF_PLEDGEBALL_PATH', plugin_dir_path( SOF_PLEDGEBALL_FILE ) );
 }
 
+// Set plugin debugging state.
+if ( ! defined( 'SOF_PLEDGEBALL_DEBUG' ) ) {
+	define( 'SOF_PLEDGEBALL_DEBUG', false );
+}
+
 
 
 /**
@@ -200,6 +205,35 @@ class SOF_Pledgeball {
 		$this->event = new SOF_Pledgeball_Event( $this );
 		$this->organisation = new SOF_Pledgeball_Organisation( $this );
 		$this->form = new SOF_Pledgeball_Form( $this );
+
+	}
+
+	/**
+	 * Write to the error log.
+	 *
+	 * @since 1.0
+	 *
+	 * @param array $data The data to write to the log file.
+	 */
+	public function log_error( $data = [] ) {
+
+		// Skip if not debugging.
+		if ( SOF_PLEDGEBALL_DEBUG === false ) {
+			return;
+		}
+
+		// Skip if empty.
+		if ( empty( $data ) ) {
+			return;
+		}
+
+		// Format data.
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+		$error = print_r( $data, true );
+
+		// Write to log file.
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		error_log( $error );
 
 	}
 
