@@ -30,10 +30,10 @@ $failure = filter_input( INPUT_GET, 'failure' );
 			<p>
 			<?php if ( 'no-auth' === $failure ) : ?>
 				<?php esc_html_e( 'Authentication failed. Could not submit the Pledge.', 'sof-pledgeball' ); ?>
-			<?php else: ?>
+			<?php else : ?>
 				<?php if ( 'no-event' === $failure ) : ?>
 					<?php esc_html_e( 'Event not recognized', 'sof-pledgeball' ); ?>
-				<?php else: ?>
+				<?php else : ?>
 					<?php esc_html_e( 'Please complete all fields.', 'sof-pledgeball' ); ?>
 				<?php endif; ?>
 				</p>
@@ -46,7 +46,7 @@ $failure = filter_input( INPUT_GET, 'failure' );
 
 		<?php if ( ! empty( $pledgeball_event_id ) ) : ?>
 			<input type="hidden" id="pledgeball_event_id" name="pledgeball_event_id" value="<?php echo $pledgeball_event_id; ?>">
-		<?php else: ?>
+		<?php else : ?>
 			<input type="hidden" id="pledgeball_event_id" name="pledgeball_event_id" value="0">
 		<?php endif; ?>
 
