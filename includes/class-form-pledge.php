@@ -311,6 +311,9 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 	 */
 	public function form_styles() {
 
+		// Define loading image URL.
+		$loader_url = SOF_PLEDGEBALL_URL . 'assets/images/spinners/ajax-loader.gif';
+
 		// Define styles.
 		$styles = '<style>
 
@@ -472,7 +475,7 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 			}
 
 			#pledge_submit .spinner {
-				background: url(' . SOF_PLEDGEBALL_URL . 'assets/images/spinners/ajax-loader.gif' . ') no-repeat;
+				background: url(' . $loader_url . ') no-repeat;
 				background-size: 20px 20px;
 				display: inline-block;
 				visibility: hidden;
@@ -488,7 +491,7 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 			(-webkit-min-device-pixel-ratio: 1.25),
 			(min-resolution: 120dpi) {
 				#pledge_submit .spinner {
-					background-image: url(' . SOF_PLEDGEBALL_URL . 'assets/images/spinners/ajax-loader.gif' . ');
+					background-image: url(' . $loader_url . ');
 				}
 			}
 
