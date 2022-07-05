@@ -147,8 +147,9 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		// Init return.
 		$markup = '';
 
-		// Check attributes for the WordPress Event ID.
+		// Check attributes for the WordPress Event.
 		$event_id = isset( $attr['event'] ) ? (int) $attr['event'] : 0;
+		$event_country = isset( $attr['country'] ) ? $attr['country'] : '';
 
 		// Try and get the Pledgeball Event ID.
 		$pledgeball_event_ids = $this->plugin->event->pledgeball_meta_get( $event_id );
@@ -174,8 +175,15 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		// Use the first one because we can't do repeating Events yet.
 		$pledgeball_event_id = array_pop( $pledgeball_event_ids );
 
+		// Build transient key.
+		$transient_key = 'sof_pledgeball_definitions';
+		if ( ! empty( $event_country ) ) {
+			$transient_key .= '_' . $event_country;
+		}
+
 		// First check our transient for the data.
-		$pledges = get_site_transient( 'sof_pledgeball_definitions' );
+		$pledges = get_site_transient( $transient_key );
+		//$pledges = false;
 
 		/*
 		$my_event = $this->plugin->pledgeball->remote->event_get_by_id( 9855 );
@@ -202,8 +210,14 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		// Query again if it's not found.
 		if ( $pledges === false ) {
 
-			// Get all possible Pledge definitions.
-			$pledges = $this->plugin->pledgeball->remote->definitions_get_all();
+			// Define params to get the Spirit of Football Pledges.
+			$args = [ 'eventgroup' => SOF_PLEDGEBALL_EVENT_GROUP_ID ];
+			if ( ! empty( $event_country ) ) {
+				$args['countrycode2'] = $event_country;
+			}
+
+			// Get all relevant Pledge definitions.
+			$pledges = $this->plugin->pledgeball->remote->definitions_get_all( $args );
 
 			/*
 			$e = new \Exception();
@@ -215,8 +229,14 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 			] );
 			*/
 
-			// Store for a week given how infrequently Pledge definitions are modified.
-			set_site_transient( 'sof_pledgeball_definitions', $pledges, 1 * WEEK_IN_SECONDS );
+			// How did we do?
+			if ( ! empty( $pledges ) ) {
+				// Store for a day given how infrequently Pledge definitions are modified.
+				set_site_transient( $transient_key, $pledges, DAY_IN_SECONDS );
+			} else {
+				// We got an error and want to try again.
+				delete_site_transient( $transient_key );
+			}
 
 		}
 
@@ -235,8 +255,11 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 
 			$saving = '';
 			if ( ! empty( $pledge->KgCO2e ) && $pledge->KgCO2e != '-1' ) {
-				/* translators: %s The number of kilogrammes. */
-				$saving = ' <span>' . sprintf( __( 'Saves %s kg of CO<sub>2</sub>e per year.', 'sof-pledgeball' ), esc_html( $pledge->KgCO2e ) ) . '</span>';
+				$saving = ' <span>' . sprintf(
+					/* translators: %s The number of kilogrammes. */
+					__( 'Saves %s kg of CO<sub>2</sub>e per year.', 'sof-pledgeball' ),
+					'<span class="pledge_kgco2e">' . esc_html( $pledge->KgCO2e ) . '</span>'
+				) . '</span>';
 			}
 			if ( ! empty( $pledge->KgCO2e ) && $pledge->KgCO2e == '-1' ) {
 				$saving = ' <span>' . __( 'Saves CO<sub>2</sub>e but hard to quantify.', 'sof-pledgeball' ) . '</span>';
