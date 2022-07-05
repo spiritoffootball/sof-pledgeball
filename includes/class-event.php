@@ -361,6 +361,48 @@ class SOF_Pledgeball_Event {
 
 	}
 
+	/**
+	 * Gets the 2-letter ISO Country Code for a given Event ID.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int $event_id The numeric ID of the Event.
+	 * @return str $country_code The Country Code of the Event, empty on failure.
+	 */
+	public function countrycode_get_by_event_id( $event_id ) {
+
+		// Init return.
+		$country_code = '';
+
+		// Get Venue for this Event.
+		$venue_id = eo_get_venue( $event_id );
+		if ( empty( $venue_id ) ) {
+			return $country_code;
+		}
+
+		// Get the full Venue data.
+		$venue = $this->venue_get_by_id( $venue_id );
+
+		// Extract the name of the Country.
+		$country_name = isset( $venue->country ) ? $venue->country : '';
+		if ( empty( $country_name ) ) {
+			return $country_code;
+		}
+
+		// Get the Country data.
+		$country = $this->plugin->civicrm->country_get_by_name( $country_name );
+		if ( empty( $country ) ) {
+			return $country_code;
+		}
+
+		// Extract the ISO Country Code.
+		$country_code = isset( $country['iso_code'] ) ? $country['iso_code'] : '';
+
+		// --<
+		return $country_code;
+
+	}
+
 	// -------------------------------------------------------------------------
 
 	/**
