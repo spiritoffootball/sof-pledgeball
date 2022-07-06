@@ -235,8 +235,8 @@ class SOF_Pledgeball_Event {
 			], true ) );
 			*/
 
-			// Add the ID if this Event correspondence doesn't already exist.
-			if ( empty( $meta[ $occurrence_id ] ) ) {
+			// Overwrite the ID because the Pledgeball data may have changed.
+			if ( ! empty( $pledgeball_event_id ) ) {
 				$meta[ $occurrence_id ] = $pledgeball_event_id;
 			}
 
