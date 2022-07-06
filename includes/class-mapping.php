@@ -145,6 +145,11 @@ class SOF_Pledgeball_Mapping {
 			}
 		}
 
+		// Bail if we have no Organiser email.
+		if ( empty( $pledgeball_event['email'] ) ) {
+			return $pledgeball_events;
+		}
+
 		// We need an "eventtype" from the Event Category.
 		if ( ! empty( $term ) && ( $term instanceof WP_Term ) ) {
 			// TODO: Check this.
