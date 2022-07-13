@@ -68,7 +68,7 @@ $failure = filter_input( INPUT_GET, 'failure' );
 
 		<fieldset>
 			<h3><?php esc_html_e( 'Choose Your Pledges', 'sof-pledgeball' ); ?></h3>
-			<p><?php esc_html_e( 'Thank you for supporting PledgeBall and helping the planet!', 'sof-pledgeball' ); ?></p>
+			<p><?php esc_html_e( 'Thank you for supporting Spirit of Football and Pledgeball - and helping the planet too!', 'sof-pledgeball' ); ?></p>
 			<div class="pledgeball_pledges">
 				<?php foreach ( $build as $heading => $items ) : ?>
 					<h4><?php echo $heading; ?></h4>
