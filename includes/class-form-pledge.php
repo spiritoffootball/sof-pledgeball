@@ -282,7 +282,7 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		ksort( $build );
 
 		// Define Consent text.
-		$consent = esc_html__( 'I consent to my details being stored by Spirit of Football and our partner PledgeBall (required)', 'sof-pledgeball' );
+		$consent = esc_html__( 'I consent to my details being stored by Spirit of Football and our partner Pledgeball (required)', 'sof-pledgeball' );
 
 		/**
 		 * Allow "Consent" text to be filtered.
