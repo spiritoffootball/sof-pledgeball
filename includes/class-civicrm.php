@@ -30,6 +30,15 @@ class SOF_Pledgeball_CiviCRM {
 	public $plugin;
 
 	/**
+	 * Activity object.
+	 *
+	 * @since 1.0
+	 * @access public
+	 * @var object $activity The Activity object.
+	 */
+	public $activity;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 1.0
@@ -74,6 +83,9 @@ class SOF_Pledgeball_CiviCRM {
 	 */
 	public function include_files() {
 
+		// Include class files.
+		include SOF_PLEDGEBALL_PATH . 'includes/class-civicrm-activity.php';
+
 	}
 
 	/**
@@ -82,6 +94,9 @@ class SOF_Pledgeball_CiviCRM {
 	 * @since 1.0
 	 */
 	public function setup_objects() {
+
+		// Init objects.
+		$this->activity = new SOF_Pledgeball_CiviCRM_Activity( $this );
 
 	}
 
