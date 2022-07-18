@@ -462,4 +462,88 @@ class SOF_Pledgeball_Event {
 
 	}
 
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Gets all Pledgeball Event data.
+	 *
+	 * @since 1.0
+	 *
+	 * @param bool $force Force data to fetched from remote API.
+	 * @return array $pledgeball_data The array of Pledgeball Event data.
+	 */
+	public function pledgeball_data_get_all( $force = false ) {
+
+		// Init return.
+		$pledgeball_data = [];
+
+		// Use a transient key.
+		$transient_key = 'sof_pledgeball_events';
+
+		// Maybe check our transient for the data.
+		if ( false === $force ) {
+			// Return the data if there is some.
+			$pledgeball_data = get_site_transient( $transient_key );
+			if ( ! empty( $pledgeball_data ) ) {
+				return $pledgeball_data;
+			}
+		}
+
+		// Get all Pledgeball Event data.
+		$pledgeball_data = $this->plugin->pledgeball->remote->events_get_all();
+
+		// Store for a day given that Pledgeball recalculate daily.
+		if ( ! empty( $pledgeball_data ) ) {
+			set_site_transient( $transient_key, $pledgeball_data, DAY_IN_SECONDS );
+		}
+
+		// --<
+		return $pledgeball_data;
+
+	}
+
+	/**
+	 * Gets the Pledgeball Event data for a given Event Organiser Event.
+	 *
+	 * @since 1.0
+	 *
+	 * @param integer $event_id The numeric ID of the Event Organiser Event.
+	 * @param bool $force Force data to fetched from remote API.
+	 * @return array $pledgeball_meta The array of Pledgeball Event correspondences.
+	 */
+	public function pledgeball_data_get( $event_id, $force = false ) {
+
+		// Init return.
+		$pledgeball_data = [];
+
+		// Bail if we don't have an Event ID.
+		if ( empty( $event_id ) ) {
+			return $pledgeball_data;
+		}
+
+		// Use a transient key.
+		$transient_key = 'sof_pledgeball_event_' . $event_id;
+
+		// Maybe check our transient for the data.
+		if ( false === $force ) {
+			// Return the data if there is some.
+			$pledgeball_data = get_site_transient( $transient_key );
+			if ( ! empty( $pledgeball_data ) ) {
+				return $pledgeball_data;
+			}
+		}
+
+		// Get the Pledgeball data for this Event.
+		$pledgeball_data = $this->plugin->pledgeball->remote->event_get_by_id( $event_id );
+
+		// Store for a day given that Pledgeball recalculate daily.
+		if ( ! empty( $pledgeball_data ) ) {
+			set_site_transient( $transient_key, $pledgeball_data, DAY_IN_SECONDS );
+		}
+
+		// --<
+		return $pledgeball_data;
+
+	}
+
 }

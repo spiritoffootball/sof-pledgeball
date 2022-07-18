@@ -39,6 +39,11 @@ if ( ! defined( 'SOF_PLEDGEBALL_PATH' ) ) {
 	define( 'SOF_PLEDGEBALL_PATH', plugin_dir_path( SOF_PLEDGEBALL_FILE ) );
 }
 
+// Set plugin testing state.
+if ( ! defined( 'SOF_PLEDGEBALL_SKIP_SUBMIT' ) ) {
+	define( 'SOF_PLEDGEBALL_SKIP_SUBMIT', false );
+}
+
 // Set plugin debugging state.
 if ( ! defined( 'SOF_PLEDGEBALL_DEBUG' ) ) {
 	define( 'SOF_PLEDGEBALL_DEBUG', false );
@@ -108,6 +113,15 @@ class SOF_Pledgeball {
 	 * @var object $form The Form object.
 	 */
 	public $form;
+
+	/**
+	 * Shortcode object.
+	 *
+	 * @since 1.0
+	 * @access public
+	 * @var object $shortcode The Shortcode object.
+	 */
+	public $shortcode;
 
 	/**
 	 * Initialises this object.
@@ -186,6 +200,7 @@ class SOF_Pledgeball {
 		include SOF_PLEDGEBALL_PATH . 'includes/class-event.php';
 		include SOF_PLEDGEBALL_PATH . 'includes/class-organisation.php';
 		include SOF_PLEDGEBALL_PATH . 'includes/class-form.php';
+		include SOF_PLEDGEBALL_PATH . 'includes/class-shortcode.php';
 
 	}
 
@@ -205,6 +220,7 @@ class SOF_Pledgeball {
 		$this->event = new SOF_Pledgeball_Event( $this );
 		$this->organisation = new SOF_Pledgeball_Organisation( $this );
 		$this->form = new SOF_Pledgeball_Form( $this );
+		$this->shortcode = new SOF_Pledgeball_Shortcode( $this );
 
 	}
 

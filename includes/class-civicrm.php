@@ -84,7 +84,7 @@ class SOF_Pledgeball_CiviCRM {
 	public function include_files() {
 
 		// Include class files.
-		include SOF_PLEDGEBALL_PATH . 'includes/class-civicrm-activity.php';
+		//include SOF_PLEDGEBALL_PATH . 'includes/class-civicrm-activity.php';
 
 	}
 
@@ -96,7 +96,7 @@ class SOF_Pledgeball_CiviCRM {
 	public function setup_objects() {
 
 		// Init objects.
-		$this->activity = new SOF_Pledgeball_CiviCRM_Activity( $this );
+		//$this->activity = new SOF_Pledgeball_CiviCRM_Activity( $this );
 
 	}
 

@@ -1,10 +1,8 @@
 <?php
 /**
- * Organisation Class.
+ * Shortcode Class.
  *
- * Handles organisation-related functionality.
- *
- * This class interacts with Pledgeball Organisations.
+ * This class loads the default SOF Pledgeball shortcode classes.
  *
  * @package SOF_Pledgeball
  * @since 1.0
@@ -14,13 +12,13 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Organisation Class.
+ * Shortcode Class.
  *
- * A class that encapsulates Pledgeball Organisation-related functionality.
+ * A class that encapsulates shortcode-related functionality.
  *
  * @since 1.0
  */
-class SOF_Pledgeball_Organisation {
+class SOF_Pledgeball_Shortcode {
 
 	/**
 	 * Plugin object.
@@ -30,6 +28,15 @@ class SOF_Pledgeball_Organisation {
 	 * @var object $plugin The Plugin object.
 	 */
 	public $plugin;
+
+	/**
+	 * "Pledgeball Data" Shortcode object.
+	 *
+	 * @since 1.0
+	 * @access public
+	 * @var object $data_display The "Pledgeball Data" Shortcode object.
+	 */
+	public $data_display;
 
 	/**
 	 * Constructor.
@@ -61,11 +68,11 @@ class SOF_Pledgeball_Organisation {
 		$this->register_hooks();
 
 		/**
-		 * Broadcast that this class is active.
+		 * Broadcast that this object is now initialised.
 		 *
 		 * @since 1.0
 		 */
-		do_action( 'sof_pledgeball/organisation/init' );
+		do_action( 'sof_pledgeball/shortcode/init' );
 
 	}
 
@@ -76,6 +83,9 @@ class SOF_Pledgeball_Organisation {
 	 */
 	public function include_files() {
 
+		// Include class files.
+		include SOF_PLEDGEBALL_PATH . 'includes/class-shortcode-data.php';
+
 	}
 
 	/**
@@ -85,6 +95,9 @@ class SOF_Pledgeball_Organisation {
 	 */
 	public function setup_objects() {
 
+		// Init objects.
+		$this->data_display = new SOF_Pledgeball_Shortcode_Data( $this );
+
 	}
 
 	/**
@@ -93,32 +106,6 @@ class SOF_Pledgeball_Organisation {
 	 * @since 1.0
 	 */
 	public function register_hooks() {
-
-	}
-
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Counts the number of Partners.
-	 *
-	 * @since 1.0
-	 */
-	public function partners_count() {
-
-		// Define query args.
-		$partners_args = [
-			'post_type' => 'partner',
-			'post_status' => 'publish',
-			'order' => 'ASC',
-			'orderby' => 'title',
-			'posts_per_page' => -1,
-		];
-
-		// The query.
-		$partners = new WP_Query( $partners_args );
-
-		// --<
-		return $partners->found_posts;
 
 	}
 

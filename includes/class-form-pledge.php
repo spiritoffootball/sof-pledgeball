@@ -154,18 +154,6 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		// Try and get the Pledgeball Event ID.
 		$pledgeball_event_ids = $this->plugin->event->pledgeball_meta_get( $event_id );
 
-		/*
-		$e = new \Exception();
-		$trace = $e->getTraceAsString();
-		$this->plugin->log_error( [
-			'method' => __METHOD__,
-			'attr' => $attr,
-			'event_id' => $event_id,
-			'pledgeball_event_ids' => $pledgeball_event_ids,
-			//'backtrace' => $trace,
-		] );
-		*/
-
 		// Bail if we didn't get any Pledgeball Event IDs.
 		if ( empty( $pledgeball_event_ids ) ) {
 			$markup .= '<p>' . __( 'Sorry, something went wrong. Event not recognized.', 'sof-pledgeball' ) . '</p>' . "\n";
@@ -183,29 +171,6 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 
 		// First check our transient for the data.
 		$pledges = get_site_transient( $transient_key );
-		//$pledges = false;
-
-		/*
-		$my_event = $this->plugin->pledgeball->remote->event_get_by_id( 9855 );
-		$e = new \Exception();
-		$trace = $e->getTraceAsString();
-		$this->plugin->log_error( [
-			'method' => __METHOD__,
-			'my_event' => $my_event,
-			//'backtrace' => $trace,
-		], true ) );
-		*/
-
-		/*
-		$my_event = $this->plugin->pledgeball->remote->event_get_by_id( 9855 );
-		$e = new \Exception();
-		$trace = $e->getTraceAsString();
-		$this->plugin->log_error( [
-			'method' => __METHOD__,
-			'my_event' => $my_event,
-			//'backtrace' => $trace,
-		] );
-		*/
 
 		// Query again if it's not found.
 		if ( $pledges === false ) {
@@ -218,16 +183,6 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 
 			// Get all relevant Pledge definitions.
 			$pledges = $this->plugin->pledgeball->remote->definitions_get_all( $args );
-
-			/*
-			$e = new \Exception();
-			$trace = $e->getTraceAsString();
-			$this->plugin->log_error( [
-				'method' => __METHOD__,
-				'pledges' => $pledges,
-				//'backtrace' => $trace,
-			] );
-			*/
 
 			// How did we do?
 			if ( ! empty( $pledges ) ) {
@@ -759,10 +714,14 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		*/
 
 		// Submit the Standalone Pledge.
-		$response = $this->plugin->pledgeball->remote->pledge_create( $submission );
-		if ( $response === false ) {
-			// Bail with default message.
-			wp_send_json( $data );
+		if ( false === SOF_PLEDGEBALL_SKIP_SUBMIT ) {
+			$response = $this->plugin->pledgeball->remote->pledge_create( $submission );
+			if ( $response === false ) {
+				// Bail with default message.
+				wp_send_json( $data );
+			}
+		} else {
+			$response = false;
 		}
 
 		/**
@@ -957,16 +916,15 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 			'okemails' => $okemails,
 		];
 
-		/*
 		// Submit the Pledge.
-		$response = $this->plugin->pledgeball->remote->pledge_create( $submission );
-		if ( $response === false ) {
-			$this->form_redirect( [ 'failure' => 'no-response' ] );
+		if ( false === SOF_PLEDGEBALL_SKIP_SUBMIT ) {
+			$response = $this->plugin->pledgeball->remote->pledge_create( $submission );
+			if ( $response === false ) {
+				$this->form_redirect( [ 'failure' => 'no-response' ] );
+			}
+		} else {
+			$response = false;
 		}
-		*/
-
-		// Fake a response.
-		$response = false;
 
 		/**
 		 * Broadcast that a submission has been completed.
