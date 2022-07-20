@@ -151,6 +151,12 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		$event_id = isset( $attr['event'] ) ? (int) $attr['event'] : 0;
 		$event_country = isset( $attr['country'] ) ? $attr['country'] : '';
 
+		// Bail if we didn't get an Event Organiser Event ID.
+		if ( empty( $event_id ) ) {
+			$markup .= '<p>' . __( 'Event not recognized.', 'sof-pledgeball' ) . '</p>' . "\n";
+			return $markup;
+		}
+
 		// Try and get the Pledgeball Event ID.
 		$pledgeball_event_ids = $this->plugin->event->pledgeball_meta_get( $event_id );
 
@@ -580,11 +586,19 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		] );
 		*/
 
-		// Extract "Event ID".
+		// Extract Event Organiser "Event ID".
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$eo_event_id = isset( $_POST['eo_event_id'] ) ? (int) trim( wp_unslash( $_POST['eo_event_id'] ) ) : 0;
+		if ( empty( $eo_event_id ) ) {
+			$data['notice'] = __( 'Event not recognized.', 'sof-pledgeball' );
+			wp_send_json( $data );
+		}
+
+		// Extract Pledgeball "Event ID".
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$event_id = isset( $_POST['event_id'] ) ? (int) trim( wp_unslash( $_POST['event_id'] ) ) : 0;
 		if ( empty( $event_id ) ) {
-			$data['notice'] = __( 'Event not recognized.', 'sof-pledgeball' );
+			$data['notice'] = __( 'Pledgeball Event not recognized.', 'sof-pledgeball' );
 			wp_send_json( $data );
 		}
 
@@ -716,13 +730,12 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		// Submit the Standalone Pledge.
 		if ( false === SOF_PLEDGEBALL_SKIP_SUBMIT ) {
 			$response = $this->plugin->pledgeball->remote->pledge_create( $submission );
-			if ( $response === false ) {
-				// Bail with default message.
-				wp_send_json( $data );
-			}
 		} else {
 			$response = false;
 		}
+
+		// Add the Event Organiser Event ID.
+		$submission['eo_event_id'] = (int) $eo_event_id;
 
 		/**
 		 * Broadcast that a submission has been completed.
@@ -733,6 +746,21 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		 * @param array $response The response from the server.
 		 */
 		do_action( 'sof_pledgeball/form/pledge_submit/submission', $submission, $response );
+
+		/**
+		 * Filters the response when a submission has been completed.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $response The response from the server.
+		 * @param array $submission The submitted data.
+		 */
+		$response = apply_filters( 'sof_pledgeball/form/pledge_submit/response', $response, $submission );
+
+		// Bail with default message.
+		if ( $response === false ) {
+			wp_send_json( $data );
+		}
 
 		// Default message.
 		$message = '<p class="pledgeball_thanks">' . __( 'Your pledge has been submitted. Thanks for taking part!', 'sof-pledgeball' ) . '</p>';
@@ -791,20 +819,16 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		] );
 		*/
 
-		// Extract "Event ID".
+		// Extract Event Organiser "Event ID".
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$eo_event_id = isset( $_POST['pledgeball_eo_event_id'] ) ? (int) trim( wp_unslash( $_POST['pledgeball_eo_event_id'] ) ) : 0;
+		if ( empty( $eo_event_id ) ) {
+			$this->form_redirect( [ 'failure' => 'no-event' ] );
+		}
+
+		// Extract "Pledgeball Event ID".
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$event_id = isset( $_POST['pledgeball_event_id'] ) ? (int) trim( wp_unslash( $_POST['pledgeball_event_id'] ) ) : 0;
-
-		/*
-		$e = new \Exception();
-		$trace = $e->getTraceAsString();
-		$this->plugin->log_error( [
-			'method' => __METHOD__,
-			'event_id' => $event_id,
-			//'backtrace' => $trace,
-		] );
-		*/
-
 		if ( empty( $event_id ) ) {
 			$this->form_redirect( [ 'failure' => 'no-event' ] );
 		}
@@ -919,12 +943,12 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		// Submit the Pledge.
 		if ( false === SOF_PLEDGEBALL_SKIP_SUBMIT ) {
 			$response = $this->plugin->pledgeball->remote->pledge_create( $submission );
-			if ( $response === false ) {
-				$this->form_redirect( [ 'failure' => 'no-response' ] );
-			}
 		} else {
 			$response = false;
 		}
+
+		// Add the Event Organiser Event ID.
+		$submission['eo_event_id'] = (int) $eo_event_id;
 
 		/**
 		 * Broadcast that a submission has been completed.
@@ -935,6 +959,21 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		 * @param array $response The response from the server.
 		 */
 		do_action( 'sof_pledgeball/form/pledge_submit/submission', $submission, $response );
+
+		/**
+		 * Filters the response when a submission has been completed.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $response The response from the server.
+		 * @param array $submission The submitted data.
+		 */
+		$response = apply_filters( 'sof_pledgeball/form/pledge_submit/response', $response, $submission );
+
+		// Bail with message.
+		if ( $response === false ) {
+			$this->form_redirect( [ 'failure' => 'no-response' ] );
+		}
 
 		// Our array of arguments.
 		$args = [

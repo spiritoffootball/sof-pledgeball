@@ -162,6 +162,7 @@ var Pledgeball_Pledge_Submit = Pledgeball_Pledge_Submit || {};
 		 */
 		this.setup = function() {
 
+			me.eo_event_id = $('#pledgeball_eo_event_id');
 			me.event_id = $('#pledgeball_event_id');
 			me.first_name = $('#pledgeball_first_name');
 			me.last_name = $('#pledgeball_last_name');
@@ -220,6 +221,7 @@ var Pledgeball_Pledge_Submit = Pledgeball_Pledge_Submit || {};
 
 				// Define vars.
 				var ajax_nonce = me.submit_button.data( 'security' ),
+					eo_event_id = me.eo_event_id.val(),
 					event_id = me.event_id.val(),
 					consent = me.consent.prop( 'checked' ),
 					okemails = me.okemails.prop( 'checked' ),
@@ -293,6 +295,7 @@ var Pledgeball_Pledge_Submit = Pledgeball_Pledge_Submit || {};
 				// Data received by WordPress.
 				data = {
 					action: 'sof_pledgeball_pledge_submit',
+					eo_event_id: eo_event_id,
 					event_id: event_id,
 					first_name: first_name,
 					last_name: last_name,

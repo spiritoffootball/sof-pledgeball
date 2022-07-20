@@ -36,7 +36,16 @@ class SOF_Pledgeball_Form {
 	 * @access public
 	 * @var object $pledge_submit The "Submit Pledge" Form object.
 	 */
-	public $pledge_submit;
+	public $submit;
+
+	/**
+	 * "Submit Pledge Form" Cache object.
+	 *
+	 * @since 1.0
+	 * @access public
+	 * @var object $cache The "Submit Pledge Form" Cache object.
+	 */
+	public $cache;
 
 	/**
 	 * Constructor.
@@ -85,6 +94,7 @@ class SOF_Pledgeball_Form {
 
 		// Include class files.
 		include SOF_PLEDGEBALL_PATH . 'includes/class-form-pledge.php';
+		//include SOF_PLEDGEBALL_PATH . 'includes/class-form-pledge-cache.php';
 
 	}
 
@@ -96,7 +106,8 @@ class SOF_Pledgeball_Form {
 	public function setup_objects() {
 
 		// Init objects.
-		$this->pledge_submit = new SOF_Pledgeball_Form_Pledge_Submit( $this );
+		$this->submit = new SOF_Pledgeball_Form_Pledge_Submit( $this );
+		//$this->cache = new SOF_Pledgeball_Form_Pledge_Cache( $this );
 
 	}
 

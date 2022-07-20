@@ -44,6 +44,7 @@ $failure = filter_input( INPUT_GET, 'failure' );
 		<?php wp_nonce_field( $this->nonce_action, $this->nonce_name, true ); ?>
 		<?php wp_original_referer_field(); ?>
 
+		<input type="hidden" id="pledgeball_eo_event_id" name="pledgeball_eo_event_id" value="<?php echo $event_id; ?>">
 		<?php if ( ! empty( $pledgeball_event_id ) ) : ?>
 			<input type="hidden" id="pledgeball_event_id" name="pledgeball_event_id" value="<?php echo $pledgeball_event_id; ?>">
 		<?php else : ?>
