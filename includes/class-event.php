@@ -109,6 +109,9 @@ class SOF_Pledgeball_Event {
 		// We don't want Co-Authors on Event Organiser Events.
 		add_filter( 'coauthors_supported_post_types', [ $this, 'coauthors_exclude' ], 20 );
 
+		// Clear the "All Event data" transient when a Pledge is made.
+		add_action( 'sof_pledgeball/form/pledge_submit/submission', [ $this, 'pledgeball_data_all_delete' ], 20, 2 );
+
 	}
 
 	// -------------------------------------------------------------------------
@@ -499,6 +502,28 @@ class SOF_Pledgeball_Event {
 
 		// --<
 		return $pledgeball_data;
+
+	}
+
+	/**
+	 * Deletes the transient for all Pledgeball Event data.
+	 *
+	 * Note that the transient is cleared when a Pledge is made.
+	 *
+	 * @since 1.0
+	 *
+	 * @param array $submission The submitted data.
+	 * @param array $response The response from the server.
+	 */
+	public function pledgeball_data_all_delete( $submission, $response ) {
+
+		// Bail if we have no submission.
+		if ( empty( $submission ) ) {
+			return;
+		}
+
+		// Delete the transient.
+		delete_site_transient( 'sof_pledgeball_events' );
 
 	}
 
