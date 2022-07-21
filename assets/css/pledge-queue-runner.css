@@ -1,0 +1,13 @@
+/**
+ * Pledgeball Queue Runner Styles.
+ *
+ * Implements styles for the "Send Queued Pledges to Pledgeball" dashboard meta box.
+ *
+ * @package SOF_Pledgeball
+ */
+
+#sof-pledgeball-queue-runner-submit,
+#sof-pledgeball-queue-runner .spinner
+{
+	float: left;
+}

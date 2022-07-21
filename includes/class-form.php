@@ -94,7 +94,7 @@ class SOF_Pledgeball_Form {
 
 		// Include class files.
 		include SOF_PLEDGEBALL_PATH . 'includes/class-form-pledge.php';
-		//include SOF_PLEDGEBALL_PATH . 'includes/class-form-pledge-cache.php';
+		include SOF_PLEDGEBALL_PATH . 'includes/class-form-pledge-cache.php';
 
 	}
 
@@ -107,7 +107,7 @@ class SOF_Pledgeball_Form {
 
 		// Init objects.
 		$this->submit = new SOF_Pledgeball_Form_Pledge_Submit( $this );
-		//$this->cache = new SOF_Pledgeball_Form_Pledge_Cache( $this );
+		$this->cache = new SOF_Pledgeball_Form_Pledge_Cache( $this );
 
 	}
 

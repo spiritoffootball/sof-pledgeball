@@ -228,7 +228,27 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 
 			$context = '';
 			if ( ! empty( $pledge->UsefulURL ) ) {
-				$context = ' <span>(<a href="' . esc_url( $pledge->UsefulURL ) . '" target="_blank">' . __( 'More information', 'sof-pledgeball' ) . ')</a></span>';
+				$context_array = explode( ' ', $pledge->UsefulURL );
+				$context_count = count( $context_array );
+				if ( 1 === $context_count ) {
+					$context .= ' <span>(<a href="' . esc_url( $pledge->UsefulURL ) . '" target="_blank">' . __( 'More information', 'sof-pledgeball' ) . '</a>)</span>';
+				} else {
+					$context .= ' <span>(' . __( 'More information', 'sof-pledgeball' );
+					$counter = 1;
+					foreach ( $context_array as $context_url ) {
+						if ( $counter === $context_count ) {
+							$context .= __( ' and', 'sof-pledgeball' );
+						}
+						$context .= ' <a href="' . esc_url( $context_url ) . '" target="_blank">' . __( 'here', 'sof-pledgeball' ) . '</a>';
+						if ( $counter < $context_count - 1 ) {
+							$context .= ',';
+						}
+						if ( $counter === $context_count ) {
+							$context .= ')</span>';
+						}
+						$counter++;
+					}
+				}
 			}
 
 			$divider = '';
