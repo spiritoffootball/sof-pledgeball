@@ -83,6 +83,7 @@ class SOF_Pledgeball_CiviCRM_Contact {
 	public function register_hooks() {
 
 		// Hook into Pledgeball Form submissions.
+		// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
 		//add_action( 'pledgeball_client/form/pledge_submit/submission', [ $this, 'pledge_submitted' ], 10, 2 );
 
 	}

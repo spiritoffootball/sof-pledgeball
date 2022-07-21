@@ -83,6 +83,7 @@ class SOF_Pledgeball_CiviCRM_Activity_Fields {
 	public function register_hooks() {
 
 		// Hook into Pledgeball Form submissions.
+		// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
 		//add_action( 'pledgeball_client/form/pledge_submit/submission', [ $this, 'pledge_submitted' ], 10, 2 );
 
 	}
@@ -119,9 +120,32 @@ class SOF_Pledgeball_CiviCRM_Activity_Fields {
 	 *
 	 * @since 1.0
 	 *
+	 * @param array $activity The CiviCRM Activity_Fields data.
 	 * @return array|bool $activity_data The array Activity_Fields data from the CiviCRM API, or false on failure.
 	 */
 	public function create( $activity ) {
+
+		// --<
+		return $activity_data;
+
+	}
+
+	/**
+	 * Updates a CiviCRM Activity_Fields with a given set of data.
+	 *
+	 * @since 1.0
+	 *
+	 * @param array $activity The CiviCRM Activity_Fields data.
+	 * @return array|bool $activity_data The array Activity_Fields data from the CiviCRM API, or false on failure.
+	 */
+	public function update( $activity ) {
+
+		// --<
+		return $activity_data;
+
+	}
+
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Creates a Custom Field's Option Value.
@@ -213,18 +237,6 @@ class SOF_Pledgeball_CiviCRM_Activity_Fields {
 
 		// --<
 		return $option_value_id;
-
-	}
-
-	/**
-	 * Updates a CiviCRM Activity_Fields with a given set of data.
-	 *
-	 * @since 1.0
-	 *
-	 * @param array $activity The CiviCRM Activity_Fields data.
-	 * @return array|bool $activity_data The array Activity_Fields data from the CiviCRM API, or false on failure.
-	 */
-	public function update( $activity ) {
 
 	}
 
