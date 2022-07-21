@@ -105,3 +105,30 @@ $failure = filter_input( INPUT_GET, 'failure' );
 	</div>
 
 </form>
+
+<div class="pledgeball_user_feedback">
+	<span>
+		<span class="pledgeball_user_intro"><?php esc_html_e( 'Total Pledged', 'sof-pledgeball' ); ?></span>
+		<?php
+
+		printf(
+			/* translators: %s: The number of kilogrammes saved */
+			__( '%s kg', 'sof-pledgeball' ),
+			'<span class="pledgeball_user_total">0</span>'
+		);
+
+		?>
+		<span class="pledgeball_user_outro">
+		<?php
+
+		printf(
+			/* translators: 1: The opening sub tag, 2: The closing sub tag */
+			__( 'CO%1$s2%2$se per year', 'sof-pledgeball' ),
+			'<sub>',
+			'</sub>'
+		);
+
+		?>
+		</span>
+	</span>
+</div>

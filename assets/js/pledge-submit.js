@@ -135,7 +135,7 @@ var Pledgeball_Pledge_Submit = Pledgeball_Pledge_Submit || {};
 		 * @since 1.0
 		 */
 		this.init = function() {
-
+			me.kgco2e = 0;
 		};
 
 		/**
@@ -159,6 +159,9 @@ var Pledgeball_Pledge_Submit = Pledgeball_Pledge_Submit || {};
 		 * @since 1.0
 		 */
 		this.setup = function() {
+
+			me.feedback = $('.pledgeball_user_feedback');
+			me.feedback_total = $('.pledgeball_user_feedback .pledgeball_user_total');
 
 			me.eo_event_id = $('#pledgeball_eo_event_id');
 			me.event_id = $('#pledgeball_event_id');
@@ -189,12 +192,39 @@ var Pledgeball_Pledge_Submit = Pledgeball_Pledge_Submit || {};
 		this.listeners = function() {
 
 			/**
-			 * Add a click event listener to Pledge checkboxes.
+			 * Add a change event listener to Pledge checkboxes.
 			 *
 			 * @param {Object} event The event object.
 			 */
-			me.pledges.on( 'click', function( event ) {
-				me.pledges.css( 'border-color', '#8c8f94' );
+			me.pledges.on( 'change', function( event ) {
+
+				// Define vars.
+				var saved, rounded;
+
+				// Maybe highlight checkbox.
+				if ( $(this).prop( 'checked' ) ) {
+					me.pledges.css( 'border-color', '#3683c4' );
+				} else {
+					me.pledges.css( 'border-color', '#8c8f94' );
+				}
+
+				// Maybe update display with rounded total.
+				saved = $(this).siblings( 'span' ).children( 'span.pledge_kgco2e' ).html();
+				if ( 'undefined' !== typeof( saved ) ) {
+					if ( $(this).prop( 'checked' ) ) {
+						rounded = ( me.kgco2e * 100 ) + ( parseFloat( saved ) * 100 );
+					} else {
+						rounded = ( me.kgco2e * 100 ) - ( parseFloat( saved ) * 100 );
+					}
+					me.kgco2e = parseInt( rounded ) / 100;
+					me.feedback_total.html( me.kgco2e );
+					if ( me.kgco2e > 0 ) {
+						me.feedback.show();
+					} else {
+						me.feedback.hide();
+					}
+				}
+
 			});
 
 			/**

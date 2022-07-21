@@ -499,6 +499,36 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 				}
 			}
 
+			.pledgeball_user_feedback {
+				display: none;
+				position: fixed;
+				z-index: 1000;
+				bottom: 30px;
+				right: 30px;
+				color: #000;
+				padding: 0.3em;
+				background-color: #ffcc00;
+				border: 2px solid #000;
+				border-radius: 4px;
+				font-size: 200%;
+				line-height: 1.3;
+				text-align: center;
+				min-width: 195px;
+   			}
+
+			span.pledgeball_user_intro,
+			span.pledgeball_user_outro
+			{
+				display: block;
+				font-size: 50%;
+				color: #222;
+			}
+
+			span.pledgeball_user_intro
+			{
+				text-transform: uppercase;
+			}
+
 		</style>' . "\n";
 
 		/**
