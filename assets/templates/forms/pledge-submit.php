@@ -4,8 +4,7 @@
  *
  * Handles markup for the "Submit Pledge" Form.
  *
- * @package Pledgeball_Client
- * @since 1.0
+ * @package SOF_Pledgeball
  */
 
 // Exit if accessed directly.
@@ -77,15 +76,6 @@ $failure = filter_input( INPUT_GET, 'failure' );
 						<?php foreach ( $items as $item ) : ?>
 							<li>
 								<?php echo $item; ?>
-								<?php
-
-								/*
-								if ( $heading === 'Other' ) : ?>
-									<br><input type="text" class="pledgeball_main_input pledgeball_other_input" name="pledgeball_other" id="pledgeball_other" value="">
-								<?php endif;
-								*/
-
-								?>
 							</li>
 						<?php endforeach; ?>
 					</ul>

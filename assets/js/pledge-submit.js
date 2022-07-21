@@ -3,9 +3,7 @@
  *
  * Implements functionality for the "Submit a Standalone Pledge" form.
  *
- * @since 1.0
- *
- * @package Pledgeball_Client
+ * @package SOF_Pledgeball
  */
 
 /**
@@ -306,8 +304,6 @@ var Pledgeball_Pledge_Submit = Pledgeball_Pledge_Submit || {};
 					okemails: okemails,
 					_ajax_nonce: ajax_nonce
 				};
-
-				console.log( 'data', data );
 
 				// Send the data to the server.
 				me.send( data );

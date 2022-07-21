@@ -84,6 +84,7 @@ class SOF_Pledgeball_CiviCRM {
 	public function include_files() {
 
 		// Include class files.
+		// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
 		//include SOF_PLEDGEBALL_PATH . 'includes/class-civicrm-activity.php';
 
 	}
@@ -96,6 +97,7 @@ class SOF_Pledgeball_CiviCRM {
 	public function setup_objects() {
 
 		// Init objects.
+		// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
 		//$this->activity = new SOF_Pledgeball_CiviCRM_Activity( $this );
 
 	}
