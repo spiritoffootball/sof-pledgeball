@@ -43,7 +43,7 @@ defined( 'ABSPATH' ) || exit;
 
 			<li class="data-item data-item-3">
 				<span class="data-item-number"><?php echo $co2_saved; ?></span>
-				<span class="data-item-text"><?php /* translators: 1: The opening sub tag, 2: The closing sub tag. */ printf( __( 'Kg/year of CO%1$s2%2$se savings pledged', 'sof-pledgeball' ), '<sub>', '</sub>' ); ?></span>
+				<span class="data-item-text"><?php /* translators: 1: The opening sub tag, 2: The closing sub tag. */ printf( __( 'kg/year CO%1$s2%2$se savings pledged', 'sof-pledgeball' ), '<sub>', '</sub>' ); ?></span>
 			</li>
 
 		</ul>
