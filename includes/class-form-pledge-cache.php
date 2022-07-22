@@ -48,6 +48,15 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 	private $meta_key = '_sof_pledge_submit_cache';
 
 	/**
+	 * Backup meta key name.
+	 *
+	 * @since 1.1
+	 * @access private
+	 * @var string $meta_key The backup meta key name.
+	 */
+	private $backup_key = '_sof_pledge_backup_cache';
+
+	/**
 	 * Queued flag.
 	 *
 	 * @since 1.0
@@ -128,11 +137,11 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 	public function register_hooks() {
 
 		// Intercept submissions.
+		add_action( 'sof_pledgeball/form/pledge_submit/submission', [ $this, 'add_backup' ], 10, 2 );
 		add_action( 'sof_pledgeball/form/pledge_submit/submission', [ $this, 'add_to_queue' ], 10, 2 );
 		add_filter( 'sof_pledgeball/form/pledge_submit/response', [ $this, 'response_queued' ], 10, 2 );
 
 		// Register dashboard hooks.
-		// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
 		$this->register_dashboard_hooks();
 
 	}
@@ -543,6 +552,41 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 
 		// --<
 		return $submissions;
+
+	}
+
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Backs up the pledge when a Pledge submission has been completed.
+	 *
+	 * @since 1.1
+	 *
+	 * @param array $submission The submitted data.
+	 * @param array $response The response from the server.
+	 */
+	public function add_backup( $submission, $response ) {
+
+		// Bail if we have no response - unless we are testing.
+		if ( empty( $response ) ) {
+			if ( false === SOF_PLEDGEBALL_SKIP_SUBMIT ) {
+				return;
+			}
+		}
+
+		/*
+		$e = new \Exception();
+		$trace = $e->getTraceAsString();
+		$this->plugin->log_error( [
+			'method' => __METHOD__,
+			'submission' => $submission,
+			'response' => $response,
+			//'backtrace' => $trace,
+		] );
+		*/
+
+		// Add a non-unique item to post meta.
+		add_post_meta( $submission['eo_event_id'], $this->backup_key, $submission, false );
 
 	}
 
