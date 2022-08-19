@@ -169,37 +169,8 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		// Use the first one because we can't do repeating Events yet.
 		$pledgeball_event_id = array_pop( $pledgeball_event_ids );
 
-		// Build transient key.
-		$transient_key = 'sof_pledgeball_definitions';
-		if ( ! empty( $event_country ) ) {
-			$transient_key .= '_' . $event_country;
-		}
-
-		// First check our transient for the data.
-		$pledges = get_site_transient( $transient_key );
-
-		// Query again if it's not found.
-		if ( $pledges === false ) {
-
-			// Define params to get the Spirit of Football Pledges.
-			$args = [ 'eventgroup' => SOF_PLEDGEBALL_EVENT_GROUP_ID ];
-			if ( ! empty( $event_country ) ) {
-				$args['countrycode2'] = $event_country;
-			}
-
-			// Get all relevant Pledge definitions.
-			$pledges = $this->plugin->pledgeball->remote->definitions_get_all( $args );
-
-			// How did we do?
-			if ( ! empty( $pledges ) ) {
-				// Store for a day given how infrequently Pledge definitions are modified.
-				set_site_transient( $transient_key, $pledges, DAY_IN_SECONDS );
-			} else {
-				// We got an error and want to try again.
-				delete_site_transient( $transient_key );
-			}
-
-		}
+		// Get the Pledge definitions.
+		$pledges = $this->form->pledge_definitions_get( $event_id, $event_country );
 
 		// Bail if we didn't get any results.
 		if ( empty( $pledges ) ) {

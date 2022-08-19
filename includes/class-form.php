@@ -48,6 +48,24 @@ class SOF_Pledgeball_Form {
 	public $cache;
 
 	/**
+	 * "Pledge Data" Metabox object.
+	 *
+	 * @since 1.1
+	 * @access public
+	 * @var object $info The "Pledge Data" Metabox object.
+	 */
+	public $info;
+
+	/**
+	 * Transient key.
+	 *
+	 * @since 1.1
+	 * @access public
+	 * @var str $transient_key The name of the Transient key.
+	 */
+	public $transient_key = 'sof_pledgeball_definitions';
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 1.0
@@ -95,6 +113,7 @@ class SOF_Pledgeball_Form {
 		// Include class files.
 		include SOF_PLEDGEBALL_PATH . 'includes/class-form-pledge.php';
 		include SOF_PLEDGEBALL_PATH . 'includes/class-form-pledge-cache.php';
+		include SOF_PLEDGEBALL_PATH . 'includes/class-form-pledge-info.php';
 
 	}
 
@@ -108,6 +127,7 @@ class SOF_Pledgeball_Form {
 		// Init objects.
 		$this->submit = new SOF_Pledgeball_Form_Pledge_Submit( $this );
 		$this->cache = new SOF_Pledgeball_Form_Pledge_Cache( $this );
+		$this->info = new SOF_Pledgeball_Form_Pledge_Info( $this );
 
 	}
 
@@ -117,6 +137,56 @@ class SOF_Pledgeball_Form {
 	 * @since 1.0
 	 */
 	public function register_hooks() {
+
+	}
+
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Gets the Pledge definitions.
+	 *
+	 * @since 1.1
+	 *
+	 * @param int $event_id The numeric ID of the Event.
+	 * @param str $country The ISO Country Code.
+	 * @return array $pledges The array of Pledge definitions.
+	 */
+	public function pledge_definitions_get( $event_id, $country ) {
+
+		// Build transient key.
+		$transient_key = $this->transient_key;
+		if ( ! empty( $event_country ) ) {
+			$transient_key .= '_' . $event_country;
+		}
+
+		// First check our transient for the data.
+		$pledges = get_site_transient( $transient_key );
+
+		// Query again if it's not found.
+		if ( $pledges === false ) {
+
+			// Define params to get the Spirit of Football Pledges.
+			$args = [ 'eventgroup' => SOF_PLEDGEBALL_EVENT_GROUP_ID ];
+			if ( ! empty( $event_country ) ) {
+				$args['countrycode2'] = $event_country;
+			}
+
+			// Get all relevant Pledge definitions.
+			$pledges = $this->plugin->pledgeball->remote->definitions_get_all( $args );
+
+			// How did we do?
+			if ( ! empty( $pledges ) ) {
+				// Store for a day given how infrequently Pledge definitions are modified.
+				set_site_transient( $transient_key, $pledges, DAY_IN_SECONDS );
+			} else {
+				// We got an error and want to try again.
+				delete_site_transient( $transient_key );
+			}
+
+		}
+
+		// --<
+		return $pledges;
 
 	}
 

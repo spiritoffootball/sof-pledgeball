@@ -287,7 +287,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 		), true ) );
 		*/
 
-		// Create "Quick Add Contact" metabox.
+		// Create "Send Queued Pledges to Pledgeball" metabox.
 		add_meta_box(
 			'sof_pledgeball_queue_metabox',
 			__( 'Send Queued Pledges to Pledgeball', 'sof-pledgeball' ),
