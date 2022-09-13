@@ -200,13 +200,27 @@ class SOF_Pledgeball_Form_Pledge_Info {
 		// Build data.
 		$data = [];
 		foreach ( $metabox['args'] as $event_id => $stats ) {
-			$data[] = sprintf(
-				/* translators: 1: The title of the event, 2: The amount of savings pledged. */
-				__( '%1$s %2$s kgCO<sub>2</sub>e pledged', 'sof-pledgeball' ),
-				'<span style="display: inline-block; min-width: 200px; margin-right: 5px; font-weight: bold;">' . $stats['title'] . '</span>',
-				$stats['kgCO2']
-			);
+			if ( empty( $stats['count'] ) ) {
+
+				$data[] = sprintf(
+					/* translators: %s: The title of the event */
+					__( '%s No pledges recorded', 'sof-pledgeball' ),
+					'<span style="display: inline-block; min-width: 200px; margin-right: 5px; font-weight: bold;">' . $stats['title'] . '</span>',
+					$stats['kgCO2']
+				);
+
+			} else {
+
+				$data[] = sprintf(
+					/* translators: 1: The title of the event, 2: The amount of savings pledged. */
+					__( '%1$s %2$s kgCO<sub>2</sub>e pledged', 'sof-pledgeball' ),
+					'<span style="display: inline-block; min-width: 200px; margin-right: 5px; font-weight: bold;">' . $stats['title'] . '</span>',
+					$stats['kgCO2']
+				);
+
+			}
 		}
+
 		/*
 		$e = new \Exception();
 		$trace = $e->getTraceAsString();
@@ -244,8 +258,8 @@ class SOF_Pledgeball_Form_Pledge_Info {
 			'no_found_rows' => true,
 			'posts_per_page' => -1,
 			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
-			'meta_key' => $this->backup_key,
-			'meta_compare' => 'EXISTS',
+			//'meta_key' => $this->backup_key,
+			//'meta_compare' => 'EXISTS',
 		];
 
 		// The query.
@@ -273,7 +287,14 @@ class SOF_Pledgeball_Form_Pledge_Info {
 
 				// Try and get the Pledges for this Event.
 				$data = $this->get_pledges_by_event_id( $event_id );
+
+				// Show when there are no Pledges.
 				if ( empty( $data ) ) {
+					$info[ get_the_ID() ] = [
+						'title' => get_the_title(),
+						'kgCO2' => 0,
+						'count' => 0,
+					];
 					continue;
 				}
 
