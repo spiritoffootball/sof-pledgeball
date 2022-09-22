@@ -212,10 +212,11 @@ class SOF_Pledgeball_Form_Pledge_Info {
 			} else {
 
 				$data[] = sprintf(
-					/* translators: 1: The title of the event, 2: The amount of savings pledged. */
-					__( '%1$s %2$s kgCO<sub>2</sub>e pledged', 'sof-pledgeball' ),
+					/* translators: 1: The title of the event, 2: The amount of savings pledged, 2: The number of pledges. */
+					__( '%1$s %2$s kgCO<sub>2</sub>e pledged (Pledges: %3$s)', 'sof-pledgeball' ),
 					'<span style="display: inline-block; min-width: 200px; margin-right: 5px; font-weight: bold;">' . $stats['title'] . '</span>',
-					$stats['kgCO2']
+					$stats['kgCO2'],
+					$stats['count']
 				);
 
 			}
