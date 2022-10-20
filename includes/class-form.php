@@ -148,15 +148,15 @@ class SOF_Pledgeball_Form {
 	 * @since 1.1
 	 *
 	 * @param int $event_id The numeric ID of the Event.
-	 * @param str $country The ISO Country Code.
+	 * @param str $country The ISO Country Code for the Event.
 	 * @return array $pledges The array of Pledge definitions.
 	 */
 	public function pledge_definitions_get( $event_id, $country ) {
 
 		// Build transient key.
 		$transient_key = $this->transient_key;
-		if ( ! empty( $event_country ) ) {
-			$transient_key .= '_' . $event_country;
+		if ( ! empty( $country ) ) {
+			$transient_key .= '_' . $country;
 		}
 
 		// First check our transient for the data.
@@ -167,8 +167,8 @@ class SOF_Pledgeball_Form {
 
 			// Define params to get the Spirit of Football Pledges.
 			$args = [ 'eventgroup' => SOF_PLEDGEBALL_EVENT_GROUP_ID ];
-			if ( ! empty( $event_country ) ) {
-				$args['countrycode2'] = $event_country;
+			if ( ! empty( $country ) ) {
+				$args['countrycode2'] = $country;
 			}
 
 			// Get all relevant Pledge definitions.
