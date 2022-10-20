@@ -1,0 +1,214 @@
+# Copyright (C) 2022 Christian Wach
+# This file is distributed under the same license as the SOF Pledgeball plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: SOF Pledgeball 1.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/sof-pledgeball\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2022-10-20T12:21:46+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.7.0\n"
+"X-Domain: sof-pledgeball\n"
+
+#. Plugin Name of the plugin
+msgid "SOF Pledgeball"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/spiritoffootball/sof-pledgeball"
+msgstr ""
+
+#. Description of the plugin
+msgid "Interacts with Pledgeball Client plugin."
+msgstr ""
+
+#. Author of the plugin
+msgid "Christian Wach"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://theball.tv"
+msgstr ""
+
+msgid "The Story So Far"
+msgstr ""
+
+msgid "Partners"
+msgstr ""
+
+msgid "Events"
+msgstr ""
+
+#. translators: 1: The opening sub tag, 2: The closing sub tag.
+msgid "kg/year CO%1$s2%2$se savings pledged"
+msgstr ""
+
+msgid "Your pledge has been submitted. Thanks for taking part!"
+msgstr ""
+
+msgid "Authentication failed. Could not submit the Pledge."
+msgstr ""
+
+msgid "Event not recognized"
+msgstr ""
+
+msgid "Please complete all fields."
+msgstr ""
+
+msgid "Your Details"
+msgstr ""
+
+msgid "First Name"
+msgstr ""
+
+msgid "Last Name"
+msgstr ""
+
+msgid "Email Address"
+msgstr ""
+
+msgid "Choose Your Pledges"
+msgstr ""
+
+msgid "Thank you for supporting Spirit of Football and Pledgeball - and helping the planet too!"
+msgstr ""
+
+msgid "Almost There"
+msgstr ""
+
+msgid "Submit Pledge"
+msgstr ""
+
+msgid "Total Pledged"
+msgstr ""
+
+#. translators: %s: The number of kilogrammes saved
+msgid "%s kg"
+msgstr ""
+
+#. translators: 1: The opening sub tag, 2: The closing sub tag
+msgid "CO%1$s2%2$se per year"
+msgstr ""
+
+msgid "Send"
+msgstr ""
+
+msgid "A numeric ID must be present to update an Activity."
+msgstr ""
+
+msgid "A numeric ID must be present to update an Contact."
+msgstr ""
+
+msgid "Sending..."
+msgstr ""
+
+msgid "Pledges Sent"
+msgstr ""
+
+msgid "Send Queued Pledges to Pledgeball"
+msgstr ""
+
+msgid "An AJAX process is running. Could not submit Pledges to Pledgeball"
+msgstr ""
+
+msgid "Authentication failed. Could not submit Pledges to Pledgeball."
+msgstr ""
+
+#. translators: 1: The number of pledges, 2: The number of events.
+msgid "There are %1$s unsent Pledges in %2$s Events."
+msgstr ""
+
+msgid "Could not send Pledges to Pledgeball. Please try again."
+msgstr ""
+
+msgid "Authentication failed. Could not send Pledges to Pledgeball."
+msgstr ""
+
+msgid "All done!"
+msgstr ""
+
+msgid "Pledges by Event"
+msgstr ""
+
+#. translators: 1: The number of pledges, 2: The number of events.
+msgid "There are %1$s Pledges in %2$s Events."
+msgstr ""
+
+#. translators: %s: The title of the event
+msgid "%s No pledges recorded"
+msgstr ""
+
+#. translators: 1: The title of the event, 2: The amount of savings pledged, 2: The number of pledges.
+msgid "%1$s %2$s kgCO<sub>2</sub>e pledged (Pledges: %3$s)"
+msgstr ""
+
+msgid "Event not recognized."
+msgstr ""
+
+msgid "Sorry, something went wrong. Event not recognized."
+msgstr ""
+
+msgid "Sorry, something went wrong. Please reload and try again."
+msgstr ""
+
+#. translators: %s The number of kilogrammes.
+msgid "Saves %s kg of CO<sub>2</sub>e per year."
+msgstr ""
+
+msgid "Saves CO<sub>2</sub>e but hard to quantify."
+msgstr ""
+
+msgid "More information"
+msgstr ""
+
+msgid " and"
+msgstr ""
+
+msgid "here"
+msgstr ""
+
+msgid "I consent to my details being stored by Spirit of Football and our partner Pledgeball (required)"
+msgstr ""
+
+msgid "Tick to receive occasional updates about the impact of you and your fellow Pledgeballers (and if you like freebies). NB please tick even if you have already subscribed otherwise you will be unsubscribed."
+msgstr ""
+
+msgid "Please complete the fields marked in red."
+msgstr ""
+
+msgid "Please choose at least one Pledge."
+msgstr ""
+
+msgid "Submitting..."
+msgstr ""
+
+msgid "Could not submit the Pledge. Please try again."
+msgstr ""
+
+msgid "Pledgeball Event not recognized."
+msgstr ""
+
+msgid "Please enter a First Name."
+msgstr ""
+
+msgid "Please enter a Last Name."
+msgstr ""
+
+msgid "Please enter a valid Email Address."
+msgstr ""
+
+msgid "Cannot submit your Pledge unless you consent to us storing your data."
+msgstr ""
+
+msgid "Reload the page to make another pledge."
+msgstr ""
+
+msgid "Visit the website to see the summary of Pledgeball data."
+msgstr ""
+
+msgid ","
+msgstr ""
