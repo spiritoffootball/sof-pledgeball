@@ -5,7 +5,7 @@
  * GitHub Plugin URI: https://github.com/spiritoffootball/sof-pledgeball
  * Description: Interacts with Pledgeball Client plugin.
  * Author: Christian Wach
- * Version: 1.1
+ * Version: 1.2
  * Author URI: https://theball.tv
  * Requires at least: 5.7
  * Requires PHP: 7.1
@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 
 
 // Set plugin version here.
-define( 'SOF_PLEDGEBALL_VERSION', '1.1' );
+define( 'SOF_PLEDGEBALL_VERSION', '1.2' );
 
 // Store reference to this file.
 if ( ! defined( 'SOF_PLEDGEBALL_FILE' ) ) {
