@@ -279,7 +279,9 @@ class SOF_Pledgeball_Form_Pledge_Info {
 
 		// Get all non-unique items from post meta.
 		if ( $events->have_posts() ) {
+
 			while ( $events->have_posts() ) {
+
 				$events->the_post();
 				$event_id = get_the_ID();
 
@@ -395,6 +397,12 @@ class SOF_Pledgeball_Form_Pledge_Info {
 				];
 
 			}
+
+		} else {
+
+			// Do not reset query.
+			return $info;
+
 		}
 
 
