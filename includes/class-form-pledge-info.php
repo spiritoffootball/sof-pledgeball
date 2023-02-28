@@ -397,6 +397,15 @@ class SOF_Pledgeball_Form_Pledge_Info {
 			}
 		}
 
+
+		// Reset query.
+		wp_reset_postdata();
+
+		// Also requires manual emptying of post.
+		global $post;
+		$GLOBALS['post'] = null;
+		$$post = null;
+
 		/*
 		$e = new \Exception();
 		$trace = $e->getTraceAsString();
