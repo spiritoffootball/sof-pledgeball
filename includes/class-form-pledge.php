@@ -581,7 +581,7 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 
 		// Default response.
 		$data = [
-			'notice' => __( 'Could not submit the Pledge. Please try again.', 'sof-pledgeball' ),
+			'notice' => __( 'Could not submit the Pledge. Please reload the page and try again.', 'sof-pledgeball' ),
 			'saved' => false,
 		];
 
@@ -593,7 +593,7 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		// Since this is an AJAX request, check security.
 		$result = check_ajax_referer( $this->nonce_ajax, false, false );
 		if ( $result === false ) {
-			$data['notice'] = __( 'Authentication failed. Could not submit the Pledge.', 'sof-pledgeball' );
+			$data['notice'] = __( 'Authentication failed. Could not submit the Pledge. Please reload the page and try again.', 'sof-pledgeball' );
 			wp_send_json( $data );
 		}
 
@@ -760,6 +760,11 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 
 		/**
 		 * Broadcast that a submission has been completed.
+		 *
+		 * Used internally by:
+		 *
+		 * * SOF_Pledgeball_Form_Pledge_Cache::add_backup
+		 * * SOF_Pledgeball_Form_Pledge_Cache::add_to_queue
 		 *
 		 * @since 1.0
 		 *
@@ -973,6 +978,11 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 
 		/**
 		 * Broadcast that a submission has been completed.
+		 *
+		 * Used internally by:
+		 *
+		 * * SOF_Pledgeball_Form_Pledge_Cache::add_backup
+		 * * SOF_Pledgeball_Form_Pledge_Cache::add_to_queue
 		 *
 		 * @since 1.0
 		 *
