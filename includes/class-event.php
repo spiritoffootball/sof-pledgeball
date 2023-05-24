@@ -64,6 +64,11 @@ class SOF_Pledgeball_Event {
 	 */
 	public function initialise() {
 
+		// Bail on localhost.
+		if ( defined( 'SOF_PLEDGEBALL_HOST' ) && 'localhost' === SOF_PLEDGEBALL_HOST ) {
+			return;
+		}
+
 		// Bootstrap class.
 		$this->include_files();
 		$this->setup_objects();
