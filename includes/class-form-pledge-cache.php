@@ -389,9 +389,14 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 
 		// Default response.
 		$data = [
-			'notice' => __( 'Could not send Pledges to Pledgeball. Please try again.', 'sof-pledgeball' ),
+			'notice' => __( 'Could not send Pledges to Pledgeball. Please reload the page and try again.', 'sof-pledgeball' ),
 			'saved' => false,
 		];
+
+		/*
+		$data['notice'] = __( 'Disabled for now.', 'sof-pledgeball' );
+		wp_send_json( $data );
+		*/
 
 		// Skip if not AJAX submission.
 		if ( ! wp_doing_ajax() ) {
@@ -401,7 +406,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 		// Since this is an AJAX request, check security.
 		$result = check_ajax_referer( $this->nonce_ajax, false, false );
 		if ( $result === false ) {
-			$data['notice'] = __( 'Authentication failed. Could not send Pledges to Pledgeball.', 'sof-pledgeball' );
+			$data['notice'] = __( 'Authentication failed. Could not send Pledges to Pledgeball. Please reload the page and try again.', 'sof-pledgeball' );
 			wp_send_json( $data );
 		}
 
@@ -418,6 +423,16 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 		// Get current queue.
 		$queue = $this->get_queue();
 
+		/*
+		$e = new \Exception();
+		$trace = $e->getTraceAsString();
+		error_log( print_r( [
+			'method' => __METHOD__,
+			'queue' => $queue,
+			//'backtrace' => $trace,
+		], true ) );
+		*/
+
 		// Get info.
 		$event_count = count( $queue );
 		$pledge_count = 0;
@@ -432,12 +447,34 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 			$event_data = array_pop( $queue );
 			$submission = array_pop( $event_data );
 
+			/*
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			error_log( print_r( [
+				'method' => __METHOD__,
+				//'event_data' => $event_data,
+				'submission' => $submission,
+				//'backtrace' => $trace,
+			], true ) );
+			*/
+
 			// Submit the queued Pledge.
 			if ( false === SOF_PLEDGEBALL_SKIP_SUBMIT ) {
 				$response = $this->plugin->pledgeball->remote->pledge_create( $submission );
 			} else {
 				$response = false;
 			}
+
+			/*
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			error_log( print_r( [
+				'method' => __METHOD__,
+				'SOF_PLEDGEBALL_SKIP_SUBMIT' => SOF_PLEDGEBALL_SKIP_SUBMIT ? 'y' : 'n',
+				'response' => $response,
+				//'backtrace' => $trace,
+			], true ) );
+			*/
 
 			// Delete the queued Pledge on success - or when testing.
 			if ( ! empty( $response ) || true === SOF_PLEDGEBALL_SKIP_SUBMIT ) {
@@ -447,6 +484,11 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 					$event_count--;
 				}
 			}
+
+			/*
+			$data['notice'] = __( 'Skipping', 'sof-pledgeball' );
+			wp_send_json( $data );
+			*/
 
 		}
 
@@ -651,7 +693,21 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 		*/
 
 		// Remove non-unique item from post meta.
-		delete_post_meta( $submission['eo_event_id'], $this->meta_key, $submission );
+		$result = delete_post_meta( $submission['eo_event_id'], $this->meta_key, $submission );
+
+		/*
+		// Log failures.
+		if ( ! $result ) {
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			$this->plugin->log_error( [
+				'method' => __METHOD__,
+				'result' => $result,
+				'submission' => $submission,
+				//'backtrace' => $trace,
+			] );
+		}
+		*/
 
 	}
 
