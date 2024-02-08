@@ -20,11 +20,29 @@ defined( 'ABSPATH' ) || exit;
 class SOF_Pledgeball_Shortcode_Data {
 
 	/**
+	 * Plugin object.
+	 *
+	 * @since 1.0
+	 * @access public
+	 * @var object $plugin The Plugin object.
+	 */
+	public $plugin;
+
+	/**
+	 * Shortcode object.
+	 *
+	 * @since 1.0
+	 * @access public
+	 * @var object $shortcode The Shortcode object.
+	 */
+	public $shortcode;
+
+	/**
 	 * Shortcode name.
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var string $tag The Shortcode name.
+	 * @var string
 	 */
 	public $tag = 'sof_pledgeball_data';
 
