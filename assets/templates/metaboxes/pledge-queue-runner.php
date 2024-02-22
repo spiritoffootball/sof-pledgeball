@@ -10,7 +10,8 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-?><!-- assets/templates/metaboxes/pledge-queue-runner.php -->
+?>
+<!-- assets/templates/metaboxes/pledge-queue-runner.php -->
 <form name="sof-pledgeball-queue-runner" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>" method="post" id="sof-pledgeball-queue-runner" class="initial-form">
 
 	<?php wp_nonce_field( $this->nonce_action, $this->nonce_name ); ?>

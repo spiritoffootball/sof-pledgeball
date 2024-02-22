@@ -10,7 +10,8 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-?><section class="pledge-data-display">
+?>
+<section class="pledge-data-display">
 
 	<div class="pledge-data-display-inner">
 

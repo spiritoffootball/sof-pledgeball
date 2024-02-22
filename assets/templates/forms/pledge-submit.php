@@ -14,7 +14,8 @@ defined( 'ABSPATH' ) || exit;
 $submitted = filter_input( INPUT_GET, 'submitted' );
 $failure   = filter_input( INPUT_GET, 'failure' );
 
-?><form id="pledge_submit" method="post" action="">
+?>
+<form id="pledge_submit" method="post" action="">
 
 	<div class="pledge_submit_inner">
 
