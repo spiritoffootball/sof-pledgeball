@@ -5,7 +5,6 @@
  * Handles CiviCRM Contact-related functionality.
  *
  * @package SOF_Pledgeball
- * @since 1.0
  */
 
 // Exit if accessed directly.
@@ -25,7 +24,7 @@ class SOF_Pledgeball_CiviCRM_Contact {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $plugin The Plugin object.
+	 * @var SOF_Pledgeball
 	 */
 	public $plugin;
 
@@ -34,7 +33,7 @@ class SOF_Pledgeball_CiviCRM_Contact {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $civicrm The CiviCRM object.
+	 * @var SOF_Pledgeball_CiviCRM
 	 */
 	public $civicrm;
 
@@ -43,13 +42,13 @@ class SOF_Pledgeball_CiviCRM_Contact {
 	 *
 	 * @since 1.0
 	 *
-	 * @param object $civicrm The CiviCRM object.
+	 * @param SOF_Pledgeball_CiviCRM $civicrm The CiviCRM object.
 	 */
 	public function __construct( $civicrm ) {
 
 		// Store references.
 		$this->civicrm = $civicrm;
-		$this->plugin = $civicrm->plugin;
+		$this->plugin  = $civicrm->plugin;
 
 		// Init when the CiviCRM class is loaded.
 		add_action( 'sof_pledgeball/civicrm/init', [ $this, 'initialise' ] );
@@ -82,9 +81,10 @@ class SOF_Pledgeball_CiviCRM_Contact {
 	 */
 	public function register_hooks() {
 
+		/*
 		// Hook into Pledgeball Form submissions.
-		// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
-		//add_action( 'pledgeball_client/form/pledge_submit/submission', [ $this, 'pledge_submitted' ], 10, 2 );
+		add_action( 'pledgeball_client/form/pledge_submit/submission', [ $this, 'pledge_submitted' ], 10, 2 );
+		*/
 
 	}
 
@@ -100,16 +100,17 @@ class SOF_Pledgeball_CiviCRM_Contact {
 	 */
 	public function pledge_submitted( $submission, $response ) {
 
-		///*
-		$e = new \Exception();
+		/*
+		$e     = new \Exception();
 		$trace = $e->getTraceAsString();
-		error_log( print_r( [
-			'method' => __METHOD__,
+		$log   = [
+			'method'     => __METHOD__,
 			'submission' => $submission,
-			'response' => $response,
+			'response'   => $response,
 			//'backtrace' => $trace,
-		], true ) );
-		//*/
+		];
+		$this->plugin->log_error( $log );
+		*/
 
 	}
 
@@ -165,15 +166,16 @@ class SOF_Pledgeball_CiviCRM_Contact {
 		$result = civicrm_api( 'Contact', 'create', $params );
 
 		// Log and bail if there's an error.
-		if ( ! empty( $result['is_error'] ) && $result['is_error'] == 1 ) {
-			$e = new Exception();
+		if ( ! empty( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
+			$e     = new Exception();
 			$trace = $e->getTraceAsString();
-			$this->plugin->log_error( [
-				'method' => __METHOD__,
-				'params' => $params,
-				'result' => $result,
+			$log   = [
+				'method'    => __METHOD__,
+				'params'    => $params,
+				'result'    => $result,
 				'backtrace' => $trace,
-			] );
+			];
+			$this->plugin->log_error( $log );
 			return $contact_data;
 		}
 
@@ -202,14 +204,15 @@ class SOF_Pledgeball_CiviCRM_Contact {
 
 		// Log and bail if there's no Contact ID.
 		if ( empty( $contact['id'] ) ) {
-			$e = new \Exception();
+			$e     = new \Exception();
 			$trace = $e->getTraceAsString();
-			$this->plugin->log_error( [
-				'method' => __METHOD__,
-				'message' => __( 'A numeric ID must be present to update an Contact.', 'sof-pledgeball' ),
-				'contact' => $contact,
+			$log   = [
+				'method'    => __METHOD__,
+				'message'   => __( 'A numeric ID must be present to update an Contact.', 'sof-pledgeball' ),
+				'contact'   => $contact,
 				'backtrace' => $trace,
-			] );
+			];
+			$this->plugin->log_error( $log );
 			return false;
 		}
 

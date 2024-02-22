@@ -15,11 +15,12 @@ defined( 'ABSPATH' ) || exit;
 
 	<?php wp_nonce_field( $this->nonce_action, $this->nonce_name ); ?>
 
-	<div class="sof-pledgeball-queue-runner-error notice notice-error inline" style="background-color: #f7f7f7;<?php echo $error_css; ?>">
-		<p><?php echo $error; ?></p>
+	<div class="sof-pledgeball-queue-runner-error notice notice-error inline" style="background-color: #f7f7f7;<?php echo esc_attr( $error_css ); ?>">
+		<p><?php echo esc_html( $error ); ?></p>
 	</div>
 
 	<div class="sof-pledgeball-queue-info">
+		<?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>
 		<p><?php echo $info; ?></p>
 	</div>
 

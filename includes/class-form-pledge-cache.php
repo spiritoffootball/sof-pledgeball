@@ -5,7 +5,6 @@
  * Handles "Submit Pledge Form" Cache functionality.
  *
  * @package SOF_Pledgeball
- * @since 1.0
  */
 
 // Exit if accessed directly.
@@ -25,7 +24,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $plugin The Plugin object.
+	 * @var SOF_Pledgeball
 	 */
 	public $plugin;
 
@@ -34,7 +33,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $form The Form object.
+	 * @var SOF_Pledgeball_Form
 	 */
 	public $form;
 
@@ -43,7 +42,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 	 *
 	 * @since 1.0
 	 * @access private
-	 * @var string $meta_key The meta key name.
+	 * @var string
 	 */
 	private $meta_key = '_sof_pledge_submit_cache';
 
@@ -52,16 +51,18 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 	 *
 	 * @since 1.1
 	 * @access private
-	 * @var string $meta_key The backup meta key name.
+	 * @var string
 	 */
 	private $backup_key = '_sof_pledge_backup_cache';
 
 	/**
 	 * Queued flag.
 	 *
+	 * True if the submission has been queued, false otherwise.
+	 *
 	 * @since 1.0
 	 * @access private
-	 * @var string $is_queued True if the submission has been queued, false otherwise.
+	 * @var string
 	 */
 	private $is_queued = false;
 
@@ -70,7 +71,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 	 *
 	 * @since 1.0
 	 * @access private
-	 * @var string $nonce_action The Nonce action.
+	 * @var string
 	 */
 	private $nonce_action = 'sof_pledgeball_queue_runner_action';
 
@@ -79,7 +80,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 	 *
 	 * @since 1.0
 	 * @access private
-	 * @var string $nonce_name The Nonce name.
+	 * @var string
 	 */
 	private $nonce_name = 'sof_pledgeball_queue_runner_nonce';
 
@@ -88,7 +89,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 	 *
 	 * @since 1.0
 	 * @access private
-	 * @var string $nonce_ajax The Nonce name.
+	 * @var string
 	 */
 	private $nonce_ajax = 'sof_pledgeball_queue_runner_ajax';
 
@@ -103,7 +104,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 
 		// Store reference to Plugin object.
 		$this->plugin = $form->plugin;
-		$this->form = $form;
+		$this->form   = $form;
 
 		// Init when this form class is loaded.
 		add_action( 'sof_pledgeball/form/init', [ $this, 'initialise' ] );
@@ -168,9 +169,10 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 		// Register AJAX handler.
 		add_action( 'wp_ajax_sof_pledgeball_queue_runner', [ $this, 'queue_run' ] );
 
+		/*
 		// Register our form submit hander.
-		// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
 		//add_action( 'admin_init', [ $this, 'form_submitted' ] );
+		*/
 
 	}
 
@@ -207,13 +209,13 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 
 		// Init settings and localisation array.
 		$vars = [
-			'settings' => [
+			'settings'     => [
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 			],
 			'localisation' => [
-				'send' => __( 'Send', 'sof-pledgeball' ),
+				'send'    => __( 'Send', 'sof-pledgeball' ),
 				'sending' => __( 'Sending...', 'sof-pledgeball' ),
-				'sent' => __( 'Pledges Sent', 'sof-pledgeball' ),
+				'sent'    => __( 'Pledges Sent', 'sof-pledgeball' ),
 			],
 		];
 
@@ -327,8 +329,8 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 		*/
 
 		// Handle errors.
-		$error = '';
-		$error_css = ' display: none;';
+		$error      = '';
+		$error_css  = ' display: none;';
 		$error_flag = filter_input( INPUT_GET, 'queue-runner-error' );
 		if ( ! empty( $error_flag ) ) {
 			$error_css = '';
@@ -343,7 +345,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 		}
 
 		// Get info.
-		$event_count = count( $metabox['args'] );
+		$event_count  = count( $metabox['args'] );
 		$pledge_count = 0;
 		foreach ( $metabox['args'] as $event_id => $items ) {
 			$pledge_count = $pledge_count + count( $items );
@@ -352,7 +354,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 		// Build info.
 		$info = sprintf(
 			/* translators: 1: The number of pledges, 2: The number of events. */
-			__( 'There are %1$s unsent Pledges in %2$s Events.', 'sof-pledgeball' ),
+			esc_html__( 'There are %1$s unsent Pledges in %2$s Events.', 'sof-pledgeball' ),
 			'<span class="sof-pledge-count">' . $pledge_count . '</span>',
 			'<span class="sof-event-count">' . $event_count . '</span>'
 		);
@@ -390,7 +392,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 		// Default response.
 		$data = [
 			'notice' => __( 'Could not send Pledges to Pledgeball. Please reload the page and try again.', 'sof-pledgeball' ),
-			'saved' => false,
+			'saved'  => false,
 		];
 
 		/*
@@ -405,7 +407,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 
 		// Since this is an AJAX request, check security.
 		$result = check_ajax_referer( $this->nonce_ajax, false, false );
-		if ( $result === false ) {
+		if ( false === $result ) {
 			$data['notice'] = __( 'Authentication failed. Could not send Pledges to Pledgeball. Please reload the page and try again.', 'sof-pledgeball' );
 			wp_send_json( $data );
 		}
@@ -434,7 +436,7 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 		*/
 
 		// Get info.
-		$event_count = count( $queue );
+		$event_count  = count( $queue );
 		$pledge_count = 0;
 		foreach ( $queue as $event_id => $items ) {
 			$pledge_count = $pledge_count + count( $items );
@@ -497,10 +499,10 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 
 		// Data response.
 		$data = [
-			'message' => $message,
-			'saved' => true,
+			'message'      => $message,
+			'saved'        => true,
 			'pledge_count' => $pledge_count,
-			'event_count' => $event_count,
+			'event_count'  => $event_count,
 		];
 
 		// Return the data.
@@ -524,13 +526,13 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 
 		// Get Events with meta.
 		$query = [
-			'post_type' => 'event',
-			'post_status' => 'publish',
-			'no_found_rows' => true,
+			'post_type'      => 'event',
+			'post_status'    => 'publish',
+			'no_found_rows'  => true,
 			'posts_per_page' => -1,
 			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
-			'meta_key' => $this->meta_key,
-			'meta_compare' => 'EXISTS',
+			'meta_key'       => $this->meta_key,
+			'meta_compare'   => 'EXISTS',
 		];
 
 		// The query.
@@ -791,15 +793,16 @@ class SOF_Pledgeball_Form_Pledge_Cache {
 			$this->form_redirect( [ 'queue-runner-error' => 'no-auth' ] );
 		}
 
-		///*
-		$e = new \Exception();
+		/*
+		$e     = new \Exception();
 		$trace = $e->getTraceAsString();
-		error_log( print_r( [
+		$log   = [
 			'method' => __METHOD__,
-			'POST' => $_POST,
+			'POST'   => $_POST,
 			//'backtrace' => $trace,
-		], true ) );
-		//*/
+		];
+		$this->plugin->log_error( $log );
+		*/
 
 	}
 

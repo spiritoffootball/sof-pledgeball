@@ -7,7 +7,6 @@
  * This class interacts with Pledgeball Organisations.
  *
  * @package SOF_Pledgeball
- * @since 1.0
  */
 
 // Exit if accessed directly.
@@ -27,7 +26,7 @@ class SOF_Pledgeball_Organisation {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $plugin The Plugin object.
+	 * @var SOF_Pledgeball
 	 */
 	public $plugin;
 
@@ -36,7 +35,7 @@ class SOF_Pledgeball_Organisation {
 	 *
 	 * @since 1.0
 	 *
-	 * @param object $plugin The plugin object.
+	 * @param SOF_Pledgeball $plugin The plugin object.
 	 */
 	public function __construct( $plugin ) {
 
@@ -102,15 +101,17 @@ class SOF_Pledgeball_Organisation {
 	 * Counts the number of Partners.
 	 *
 	 * @since 1.0
+	 *
+	 * @return int $found_posts The number of Partners found.
 	 */
 	public function partners_count() {
 
 		// Define query args.
 		$partners_args = [
-			'post_type' => 'partner',
-			'post_status' => 'publish',
-			'order' => 'ASC',
-			'orderby' => 'title',
+			'post_type'      => 'partner',
+			'post_status'    => 'publish',
+			'order'          => 'ASC',
+			'orderby'        => 'title',
 			'posts_per_page' => -1,
 		];
 

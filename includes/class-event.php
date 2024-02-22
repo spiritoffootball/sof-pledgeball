@@ -7,7 +7,6 @@
  * This class interacts with Pledgeball Events.
  *
  * @package SOF_Pledgeball
- * @since 1.0
  */
 
 // Exit if accessed directly.
@@ -27,7 +26,7 @@ class SOF_Pledgeball_Event {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $plugin The Plugin object.
+	 * @var SOF_Pledgeball
 	 */
 	public $plugin;
 
@@ -36,7 +35,7 @@ class SOF_Pledgeball_Event {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var string $pledgeball_meta_key The Pledgeball Event correspondences meta key.
+	 * @var string
 	 */
 	public $pledgeball_meta_key = '_sof_pledgeball_meta';
 
@@ -45,7 +44,7 @@ class SOF_Pledgeball_Event {
 	 *
 	 * @since 1.0
 	 *
-	 * @param object $plugin The plugin object.
+	 * @param SOF_Pledgeball $plugin The plugin object.
 	 */
 	public function __construct( $plugin ) {
 
@@ -132,7 +131,7 @@ class SOF_Pledgeball_Event {
 	public function coauthors_exclude( $post_types ) {
 
 		// Remove "event" from the array of Post Types.
-		if ( in_array( 'event', $post_types ) ) {
+		if ( in_array( 'event', $post_types, true ) ) {
 			$post_types = array_diff( $post_types, [ 'event' ] );
 		}
 
@@ -315,11 +314,11 @@ class SOF_Pledgeball_Event {
 		foreach ( $occurrences as $occurrence_id => $occurrence ) {
 
 			// Build an array, formatted for CiviCRM.
-			$date = [];
+			$date                  = [];
 			$date['occurrence_id'] = $occurrence_id;
-			$date['start'] = eo_get_the_start( 'Y-m-d H:i:s', $event_id, $occurrence_id );
-			$date['end'] = eo_get_the_end( 'Y-m-d H:i:s', $event_id, $occurrence_id );
-			$date['human'] = eo_get_the_start( 'g:ia, M jS, Y', $event_id, $occurrence_id );
+			$date['start']         = eo_get_the_start( 'Y-m-d H:i:s', $event_id, $occurrence_id );
+			$date['end']           = eo_get_the_end( 'Y-m-d H:i:s', $event_id, $occurrence_id );
+			$date['human']         = eo_get_the_start( 'g:ia, M jS, Y', $event_id, $occurrence_id );
 
 			// Add to our return array.
 			$dates[] = $date;
@@ -447,7 +446,7 @@ class SOF_Pledgeball_Event {
 	 * @since 1.0
 	 *
 	 * @param integer $event_id The numeric ID of the Event Organiser Event.
-	 * @param array $pledgeball_meta The array of Pledgeball Event correspondences.
+	 * @param array   $pledgeball_meta The array of Pledgeball Event correspondences.
 	 */
 	public function pledgeball_meta_set( $event_id, $pledgeball_meta ) {
 
@@ -538,7 +537,7 @@ class SOF_Pledgeball_Event {
 	 * @since 1.0
 	 *
 	 * @param integer $event_id The numeric ID of the Event Organiser Event.
-	 * @param bool $force Force data to fetched from remote API.
+	 * @param bool    $force Force data to fetched from remote API.
 	 * @return array $pledgeball_meta The array of Pledgeball Event correspondences.
 	 */
 	public function pledgeball_data_get( $event_id, $force = false ) {

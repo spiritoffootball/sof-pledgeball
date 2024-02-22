@@ -1,25 +1,26 @@
 <?php
 /**
- * Plugin Name: SOF Pledgeball
- * Plugin URI: https://github.com/spiritoffootball/sof-pledgeball
+ * SOF Pledgeball
+ *
+ * Plugin Name:       SOF Pledgeball
+ * Description:       Interacts with Pledgeball Client plugin.
+ * Version:           1.2
+ * Plugin URI:        https://github.com/spiritoffootball/sof-pledgeball
  * GitHub Plugin URI: https://github.com/spiritoffootball/sof-pledgeball
- * Description: Interacts with Pledgeball Client plugin.
- * Author: Christian Wach
- * Version: 1.2
- * Author URI: https://theball.tv
+ * Author:            Christian Wach
+ * Author URI:        https://theball.tv
  * Requires at least: 5.7
- * Requires PHP: 7.1
- * Text Domain: sof-pledgeball
- * Domain Path: /languages
+ * Requires PHP:      7.4
+ * License:           GPLv2 or later
+ * License URI:       https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * Text Domain:       sof-pledgeball
+ * Domain Path:       /languages
  *
  * @package SOF_Pledgeball
- * @since 1.0
  */
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
-
-
 
 // Set plugin version here.
 define( 'SOF_PLEDGEBALL_VERSION', '1.2' );
@@ -49,8 +50,6 @@ if ( ! defined( 'SOF_PLEDGEBALL_DEBUG' ) ) {
 	define( 'SOF_PLEDGEBALL_DEBUG', false );
 }
 
-
-
 /**
  * Pledgeball Client Class.
  *
@@ -65,34 +64,34 @@ class SOF_Pledgeball {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $pledgeball The Pledgeball Client plugin reference.
+	 * @var Pledgeball_Client
 	 */
 	public $pledgeball;
-
-	/**
-	 * CiviCRM object.
-	 *
-	 * @since 1.0
-	 * @access public
-	 * @var object $civicrm The CiviCRM object.
-	 */
-	public $civicrm;
 
 	/**
 	 * Mapping object.
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $mapping The Mapping object.
+	 * @var SOF_Pledgeball_Mapping
 	 */
 	public $mapping;
+
+	/**
+	 * CiviCRM object.
+	 *
+	 * @since 1.0
+	 * @access public
+	 * @var SOF_Pledgeball_CiviCRM
+	 */
+	public $civicrm;
 
 	/**
 	 * Event object.
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $event The Event object.
+	 * @var SOF_Pledgeball_Event
 	 */
 	public $event;
 
@@ -101,7 +100,7 @@ class SOF_Pledgeball {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $organisation The Organisation object.
+	 * @var SOF_Pledgeball_Organisation
 	 */
 	public $organisation;
 
@@ -110,7 +109,7 @@ class SOF_Pledgeball {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $form The Form object.
+	 * @var SOF_Pledgeball_Form
 	 */
 	public $form;
 
@@ -119,7 +118,7 @@ class SOF_Pledgeball {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $shortcode The Shortcode object.
+	 * @var SOF_Pledgeball_Shortcode
 	 */
 	public $shortcode;
 
@@ -149,7 +148,7 @@ class SOF_Pledgeball {
 
 		// Only do this once.
 		static $done;
-		if ( isset( $done ) && $done === true ) {
+		if ( isset( $done ) && true === $done ) {
 			return;
 		}
 
@@ -215,12 +214,12 @@ class SOF_Pledgeball {
 		$this->pledgeball = pledgeball_client();
 
 		// Initialise objects.
-		$this->mapping = new SOF_Pledgeball_Mapping( $this );
-		$this->civicrm = new SOF_Pledgeball_CiviCRM( $this );
-		$this->event = new SOF_Pledgeball_Event( $this );
+		$this->mapping      = new SOF_Pledgeball_Mapping( $this );
+		$this->civicrm      = new SOF_Pledgeball_CiviCRM( $this );
+		$this->event        = new SOF_Pledgeball_Event( $this );
 		$this->organisation = new SOF_Pledgeball_Organisation( $this );
-		$this->form = new SOF_Pledgeball_Form( $this );
-		$this->shortcode = new SOF_Pledgeball_Shortcode( $this );
+		$this->form         = new SOF_Pledgeball_Form( $this );
+		$this->shortcode    = new SOF_Pledgeball_Shortcode( $this );
 
 	}
 

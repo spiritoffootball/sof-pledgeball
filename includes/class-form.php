@@ -5,7 +5,6 @@
  * This class loads the default SOF Pledgeball form classes.
  *
  * @package SOF_Pledgeball
- * @since 1.0
  */
 
 // Exit if accessed directly.
@@ -25,7 +24,7 @@ class SOF_Pledgeball_Form {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $plugin The Plugin object.
+	 * @var SOF_Pledgeball
 	 */
 	public $plugin;
 
@@ -34,7 +33,7 @@ class SOF_Pledgeball_Form {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $pledge_submit The "Submit Pledge" Form object.
+	 * @var SOF_Pledgeball_Form_Pledge_Submit
 	 */
 	public $submit;
 
@@ -43,7 +42,7 @@ class SOF_Pledgeball_Form {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $cache The "Submit Pledge Form" Cache object.
+	 * @var SOF_Pledgeball_Form_Pledge_Cache
 	 */
 	public $cache;
 
@@ -52,7 +51,7 @@ class SOF_Pledgeball_Form {
 	 *
 	 * @since 1.1
 	 * @access public
-	 * @var object $info The "Pledge Data" Metabox object.
+	 * @var SOF_Pledgeball_Form_Pledge_Info
 	 */
 	public $info;
 
@@ -61,7 +60,7 @@ class SOF_Pledgeball_Form {
 	 *
 	 * @since 1.1
 	 * @access public
-	 * @var str $transient_key The name of the Transient key.
+	 * @var string
 	 */
 	public $transient_key = 'sof_pledgeball_definitions';
 
@@ -70,7 +69,7 @@ class SOF_Pledgeball_Form {
 	 *
 	 * @since 1.0
 	 *
-	 * @param object $plugin The plugin object.
+	 * @param SOF_Pledgeball $plugin The plugin object.
 	 */
 	public function __construct( $plugin ) {
 
@@ -126,8 +125,8 @@ class SOF_Pledgeball_Form {
 
 		// Init objects.
 		$this->submit = new SOF_Pledgeball_Form_Pledge_Submit( $this );
-		$this->cache = new SOF_Pledgeball_Form_Pledge_Cache( $this );
-		$this->info = new SOF_Pledgeball_Form_Pledge_Info( $this );
+		$this->cache  = new SOF_Pledgeball_Form_Pledge_Cache( $this );
+		$this->info   = new SOF_Pledgeball_Form_Pledge_Info( $this );
 
 	}
 
@@ -163,7 +162,7 @@ class SOF_Pledgeball_Form {
 		$pledges = get_site_transient( $transient_key );
 
 		// Query again if it's not found.
-		if ( $pledges === false ) {
+		if ( false === $pledges ) {
 
 			// Define params to get the Spirit of Football Pledges.
 			$args = [ 'eventgroup' => SOF_PLEDGEBALL_EVENT_GROUP_ID ];

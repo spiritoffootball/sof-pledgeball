@@ -7,7 +7,6 @@
  * This class interacts with Pledgeball Mappings.
  *
  * @package SOF_Pledgeball
- * @since 1.0
  */
 
 // Exit if accessed directly.
@@ -27,7 +26,7 @@ class SOF_Pledgeball_Mapping {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $plugin The Plugin object.
+	 * @var SOF_Pledgeball
 	 */
 	public $plugin;
 
@@ -36,7 +35,7 @@ class SOF_Pledgeball_Mapping {
 	 *
 	 * @since 1.0
 	 *
-	 * @param object $plugin The plugin object.
+	 * @param SOF_Pledgeball $plugin The plugin object.
 	 */
 	public function __construct( $plugin ) {
 
@@ -104,7 +103,7 @@ class SOF_Pledgeball_Mapping {
 	 * @since 1.0
 	 *
 	 * @param object $eo_event The Event Organiser Event object.
-	 * @param array $dates The array of dates for the Event Organiser Event.
+	 * @param array  $dates The array of dates for the Event Organiser Event.
 	 * @param object $venue The Event Organiser Venue object.
 	 * @param object $term The Event Organiser Term object.
 	 * @return array $pledgeball_events The array of data for the Pledgeball Events.
@@ -121,11 +120,11 @@ class SOF_Pledgeball_Mapping {
 
 		// Init basic Pledgeball Event data.
 		$pledgeball_event = [
-			'title' => $eo_event->post_title,
-			'description' => get_the_excerpt( $eo_event->ID ),
-			'fixturesource' => 'sof',
+			'title'           => $eo_event->post_title,
+			'description'     => get_the_excerpt( $eo_event->ID ),
+			'fixturesource'   => 'sof',
 			'fixturesourceid' => $eo_event->ID,
-			'eventgroup' => SOF_PLEDGEBALL_EVENT_GROUP_ID,
+			'eventgroup'      => SOF_PLEDGEBALL_EVENT_GROUP_ID,
 		];
 
 		// Maybe add the Location data.
@@ -165,10 +164,10 @@ class SOF_Pledgeball_Mapping {
 
 			// Overwrite dates.
 			// TODO: Use GMT for storage.
-			$start_date = new DateTime( $date['start'] );
+			$start_date                    = new DateTime( $date['start'] );
 			$pledgeball_event['eventdate'] = $start_date->format( 'Y-m-d\TH:i:s' );
-			$end_date = new DateTime( $date['end'] );
-			$pledgeball_event['enddate'] = $end_date->format( 'Y-m-d\TH:i:s' );
+			$end_date                      = new DateTime( $date['end'] );
+			$pledgeball_event['enddate']   = $end_date->format( 'Y-m-d\TH:i:s' );
 
 			// Add completed Event to return array.
 			$pledgeball_events[] = $pledgeball_event;
@@ -218,7 +217,7 @@ class SOF_Pledgeball_Mapping {
 		$location['countrycode2'] = $country_code;
 
 		// Apply latitude and longitude.
-		$location['latitude'] = isset( $venue->lat ) ? $venue->lat : '';
+		$location['latitude']  = isset( $venue->lat ) ? $venue->lat : '';
 		$location['longitude'] = isset( $venue->lng ) ? $venue->lng : '';
 
 		// --<

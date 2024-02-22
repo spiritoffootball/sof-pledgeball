@@ -5,7 +5,6 @@
  * Handles CiviCRM Activity Custom Fields-related functionality.
  *
  * @package SOF_Pledgeball
- * @since 1.0
  */
 
 // Exit if accessed directly.
@@ -25,7 +24,7 @@ class SOF_Pledgeball_CiviCRM_Activity_Fields {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $plugin The Plugin object.
+	 * @var SOF_Pledgeball
 	 */
 	public $plugin;
 
@@ -34,7 +33,7 @@ class SOF_Pledgeball_CiviCRM_Activity_Fields {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $civicrm The CiviCRM object.
+	 * @var SOF_Pledgeball_CiviCRM
 	 */
 	public $civicrm;
 
@@ -43,13 +42,13 @@ class SOF_Pledgeball_CiviCRM_Activity_Fields {
 	 *
 	 * @since 1.0
 	 *
-	 * @param object $civicrm The CiviCRM object.
+	 * @param SOF_Pledgeball_CiviCRM $civicrm The CiviCRM object.
 	 */
 	public function __construct( $civicrm ) {
 
 		// Store references.
 		$this->civicrm = $civicrm;
-		$this->plugin = $civicrm->plugin;
+		$this->plugin  = $civicrm->plugin;
 
 		// Init when the CiviCRM class is loaded.
 		add_action( 'sof_pledgeball/civicrm/init', [ $this, 'initialise' ] );
@@ -82,9 +81,10 @@ class SOF_Pledgeball_CiviCRM_Activity_Fields {
 	 */
 	public function register_hooks() {
 
+		/*
 		// Hook into Pledgeball Form submissions.
-		// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
-		//add_action( 'pledgeball_client/form/pledge_submit/submission', [ $this, 'pledge_submitted' ], 10, 2 );
+		add_action( 'pledgeball_client/form/pledge_submit/submission', [ $this, 'pledge_submitted' ], 10, 2 );
+		*/
 
 	}
 
@@ -100,16 +100,17 @@ class SOF_Pledgeball_CiviCRM_Activity_Fields {
 	 */
 	public function pledge_submitted( $submission, $response ) {
 
-		///*
-		$e = new \Exception();
+		/*
+		$e     = new \Exception();
 		$trace = $e->getTraceAsString();
-		error_log( print_r( [
-			'method' => __METHOD__,
+		$log   = [
+			'method'     => __METHOD__,
 			'submission' => $submission,
-			'response' => $response,
+			'response'   => $response,
 			//'backtrace' => $trace,
-		], true ) );
-		//*/
+		];
+		$this->plugin->log_error( $log );
+		*/
 
 	}
 
@@ -189,10 +190,10 @@ class SOF_Pledgeball_CiviCRM_Activity_Fields {
 
 		// Define params for the Option Value.
 		$params = [
-			'version' => 3,
+			'version'         => 3,
 			'option_group_id' => $custom_field['option_group_id'],
-			'label' => $new_term->name,
-			'value' => $new_term->name,
+			'label'           => $new_term->name,
+			'value'           => $new_term->name,
 		];
 
 		// If there is a description, apply content filters and add to params.
@@ -204,7 +205,7 @@ class SOF_Pledgeball_CiviCRM_Activity_Fields {
 		$option_value_id = $this->option_value_id_get_by_term( $new_term );
 
 		// Trigger update if we find a synced Option Value ID.
-		if ( $option_value_id !== false ) {
+		if ( false !== $option_value_id ) {
 			$params['id'] = $option_value_id;
 		}
 
@@ -218,15 +219,16 @@ class SOF_Pledgeball_CiviCRM_Activity_Fields {
 		$this->hooks_civicrm_add();
 
 		// Log and bail if there's an error.
-		if ( ! empty( $result['is_error'] ) ) {
-			$e = new Exception();
+		if ( ! empty( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
+			$e     = new Exception();
 			$trace = $e->getTraceAsString();
-			$this->sync->log_error( [
-				'method' => __METHOD__,
-				'message' => $result['error_message'],
-				'params' => $params,
+			$log   = [
+				'method'    => __METHOD__,
+				'message'   => $result['error_message'],
+				'params'    => $params,
 				'backtrace' => $trace,
-			] );
+			];
+			$this->sync->log_error( $log );
 			return false;
 		}
 

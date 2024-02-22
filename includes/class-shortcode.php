@@ -5,7 +5,6 @@
  * This class loads the default SOF Pledgeball shortcode classes.
  *
  * @package SOF_Pledgeball
- * @since 1.0
  */
 
 // Exit if accessed directly.
@@ -25,7 +24,7 @@ class SOF_Pledgeball_Shortcode {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $plugin The Plugin object.
+	 * @var SOF_Pledgeball
 	 */
 	public $plugin;
 
@@ -34,7 +33,7 @@ class SOF_Pledgeball_Shortcode {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $data_display The "Pledgeball Data" Shortcode object.
+	 * @var SOF_Pledgeball_Shortcode_Data
 	 */
 	public $data_display;
 
@@ -43,7 +42,7 @@ class SOF_Pledgeball_Shortcode {
 	 *
 	 * @since 1.0
 	 *
-	 * @param object $plugin The plugin object.
+	 * @param SOF_Pledgeball $plugin The plugin object.
 	 */
 	public function __construct( $plugin ) {
 

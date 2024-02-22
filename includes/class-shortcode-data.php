@@ -24,7 +24,7 @@ class SOF_Pledgeball_Shortcode_Data {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $plugin The Plugin object.
+	 * @var SOF_Pledgeball
 	 */
 	public $plugin;
 
@@ -33,7 +33,7 @@ class SOF_Pledgeball_Shortcode_Data {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $shortcode The Shortcode object.
+	 * @var SOF_Pledgeball_Shortcode
 	 */
 	public $shortcode;
 
@@ -57,7 +57,7 @@ class SOF_Pledgeball_Shortcode_Data {
 
 		// Store reference to Plugin object.
 		$this->shortcode = $parent;
-		$this->plugin = $parent->plugin;
+		$this->plugin    = $parent->plugin;
 
 		// Init when the Shortcode class is loaded.
 		add_action( 'sof_pledgeball/shortcode/init', [ $this, 'initialise' ] );
@@ -107,7 +107,7 @@ class SOF_Pledgeball_Shortcode_Data {
 	 *
 	 * @since 1.0
 	 *
-	 * @param array $attr The saved Shortcode attributes.
+	 * @param array  $attr The saved Shortcode attributes.
 	 * @param string $content The enclosed content of the Shortcode.
 	 * @param string $tag The Shortcode which invoked the callback.
 	 * @return string $content The HTML-formatted Shortcode content.

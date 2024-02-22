@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 // Get submitted and failure variables.
 $submitted = filter_input( INPUT_GET, 'submitted' );
-$failure = filter_input( INPUT_GET, 'failure' );
+$failure   = filter_input( INPUT_GET, 'failure' );
 
 ?><form id="pledge_submit" method="post" action="">
 
@@ -43,9 +43,9 @@ $failure = filter_input( INPUT_GET, 'failure' );
 		<?php wp_nonce_field( $this->nonce_action, $this->nonce_name, true ); ?>
 		<?php wp_original_referer_field(); ?>
 
-		<input type="hidden" id="pledgeball_eo_event_id" name="pledgeball_eo_event_id" value="<?php echo $event_id; ?>">
+		<input type="hidden" id="pledgeball_eo_event_id" name="pledgeball_eo_event_id" value="<?php echo esc_attr( $event_id ); ?>">
 		<?php if ( ! empty( $pledgeball_event_id ) ) : ?>
-			<input type="hidden" id="pledgeball_event_id" name="pledgeball_event_id" value="<?php echo $pledgeball_event_id; ?>">
+			<input type="hidden" id="pledgeball_event_id" name="pledgeball_event_id" value="<?php echo esc_attr( $pledgeball_event_id ); ?>">
 		<?php else : ?>
 			<input type="hidden" id="pledgeball_event_id" name="pledgeball_event_id" value="0">
 		<?php endif; ?>
@@ -71,10 +71,12 @@ $failure = filter_input( INPUT_GET, 'failure' );
 			<p><?php esc_html_e( 'Thank you for supporting Spirit of Football and Pledgeball - and helping the planet too!', 'sof-pledgeball' ); ?></p>
 			<div class="pledgeball_pledges">
 				<?php foreach ( $build as $heading => $items ) : ?>
+					<?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>
 					<h4><?php echo $heading; ?></h4>
 					<ul>
 						<?php foreach ( $items as $item ) : ?>
 							<li>
+								<?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>
 								<?php echo $item; ?>
 							</li>
 						<?php endforeach; ?>
@@ -87,11 +89,11 @@ $failure = filter_input( INPUT_GET, 'failure' );
 			<h3><?php esc_html_e( 'Almost There', 'sof-pledgeball' ); ?></h3>
 			<p>
 				<input type="checkbox" class="pledge_submit_consent" name="pledgeball_consent" id="pledgeball_consent" value="1">
-				<label for="pledgeball_consent"><?php echo $consent; ?></label>
+				<label for="pledgeball_consent"><?php echo esc_html( $consent ); ?></label>
 			</p>
 			<p class="pledgeball_updates">
 				<input type="checkbox" class="pledge_submit_consent" name="pledgeball_updates" id="pledgeball_updates" value="1">
-				<label for="pledgeball_updates"><?php echo $updates; ?></label>
+				<label for="pledgeball_updates"><?php echo esc_html( $updates ); ?></label>
 			</p>
 		</fieldset>
 
@@ -113,7 +115,7 @@ $failure = filter_input( INPUT_GET, 'failure' );
 
 		printf(
 			/* translators: %s: The number of kilogrammes saved */
-			__( '%s kg', 'sof-pledgeball' ),
+			esc_html__( '%s kg', 'sof-pledgeball' ),
 			'<span class="pledgeball_user_total">0</span>'
 		);
 
@@ -123,7 +125,7 @@ $failure = filter_input( INPUT_GET, 'failure' );
 
 		printf(
 			/* translators: 1: The opening sub tag, 2: The closing sub tag */
-			__( 'CO%1$s2%2$se per year', 'sof-pledgeball' ),
+			esc_html__( 'CO%1$s2%2$se per year', 'sof-pledgeball' ),
 			'<sub>',
 			'</sub>'
 		);

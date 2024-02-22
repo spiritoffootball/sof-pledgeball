@@ -5,7 +5,6 @@
  * Handles CiviCRM-related functionality.
  *
  * @package SOF_Pledgeball
- * @since 1.0
  */
 
 // Exit if accessed directly.
@@ -25,7 +24,7 @@ class SOF_Pledgeball_CiviCRM {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $plugin The Plugin object.
+	 * @var SOF_Pledgeball
 	 */
 	public $plugin;
 
@@ -34,7 +33,7 @@ class SOF_Pledgeball_CiviCRM {
 	 *
 	 * @since 1.0
 	 * @access public
-	 * @var object $activity The Activity object.
+	 * @var SOF_Pledgeball_CiviCRM_Activity
 	 */
 	public $activity;
 
@@ -43,7 +42,7 @@ class SOF_Pledgeball_CiviCRM {
 	 *
 	 * @since 1.0
 	 *
-	 * @param object $plugin The plugin object.
+	 * @param SOF_Pledgeball $plugin The plugin object.
 	 */
 	public function __construct( $plugin ) {
 
@@ -83,9 +82,10 @@ class SOF_Pledgeball_CiviCRM {
 	 */
 	public function include_files() {
 
+		/*
 		// Include class files.
-		// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
-		//include SOF_PLEDGEBALL_PATH . 'includes/class-civicrm-activity.php';
+		include SOF_PLEDGEBALL_PATH . 'includes/class-civicrm-activity.php';
+		*/
 
 	}
 
@@ -96,9 +96,10 @@ class SOF_Pledgeball_CiviCRM {
 	 */
 	public function setup_objects() {
 
+		/*
 		// Init objects.
-		// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
-		//$this->activity = new SOF_Pledgeball_CiviCRM_Activity( $this );
+		$this->activity = new SOF_Pledgeball_CiviCRM_Activity( $this );
+		*/
 
 	}
 
@@ -167,10 +168,10 @@ class SOF_Pledgeball_CiviCRM {
 
 		// Define params to get queried Contact.
 		$params = [
-			'version' => 3,
+			'version'    => 3,
 			'sequential' => 1,
-			'id' => $contact_id,
-			'options' => [
+			'id'         => $contact_id,
+			'options'    => [
 				'limit' => 0, // No limit.
 			],
 		];
@@ -179,7 +180,7 @@ class SOF_Pledgeball_CiviCRM {
 		$result = civicrm_api( 'Contact', 'get', $params );
 
 		// Bail if there's an error.
-		if ( ! empty( $result['is_error'] ) && $result['is_error'] == 1 ) {
+		if ( ! empty( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
 			return $contact_data;
 		}
 
@@ -218,16 +219,16 @@ class SOF_Pledgeball_CiviCRM {
 
 		// Params to get the Country.
 		$params = [
-			'version' => 3,
+			'version'    => 3,
 			'sequential' => 1,
-			'id' => $country_id,
+			'id'         => $country_id,
 		];
 
 		// Call the CiviCRM API.
 		$result = civicrm_api( 'Country', 'get', $params );
 
 		// Bail if there's an error.
-		if ( ! empty( $result['is_error'] ) && $result['is_error'] == 1 ) {
+		if ( ! empty( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
 			return $country;
 		}
 
@@ -264,16 +265,16 @@ class SOF_Pledgeball_CiviCRM {
 
 		// Params to get the Country.
 		$params = [
-			'version' => 3,
+			'version'    => 3,
 			'sequential' => 1,
-			'name' => $country_name,
+			'name'       => $country_name,
 		];
 
 		// Call the CiviCRM API.
 		$result = civicrm_api( 'Country', 'get', $params );
 
 		// Bail if there's an error.
-		if ( ! empty( $result['is_error'] ) && $result['is_error'] == 1 ) {
+		if ( ! empty( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
 			return $country;
 		}
 
@@ -310,16 +311,16 @@ class SOF_Pledgeball_CiviCRM {
 
 		// Params to get the Country.
 		$params = [
-			'version' => 3,
+			'version'    => 3,
 			'sequential' => 1,
-			'iso_code' => $country_short,
+			'iso_code'   => $country_short,
 		];
 
 		// Call the CiviCRM API.
 		$result = civicrm_api( 'Country', 'get', $params );
 
 		// Bail if there's an error.
-		if ( ! empty( $result['is_error'] ) && $result['is_error'] == 1 ) {
+		if ( ! empty( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
 			return $country;
 		}
 

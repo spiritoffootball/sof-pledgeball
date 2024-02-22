@@ -5,7 +5,6 @@
  * Handles "Pledge Info" Metabox functionality.
  *
  * @package SOF_Pledgeball
- * @since 1.1
  */
 
 // Exit if accessed directly.
@@ -25,7 +24,7 @@ class SOF_Pledgeball_Form_Pledge_Info {
 	 *
 	 * @since 1.1
 	 * @access public
-	 * @var object $plugin The Plugin object.
+	 * @var SOF_Pledgeball
 	 */
 	public $plugin;
 
@@ -34,7 +33,7 @@ class SOF_Pledgeball_Form_Pledge_Info {
 	 *
 	 * @since 1.1
 	 * @access public
-	 * @var object $form The Form object.
+	 * @var SOF_Pledgeball_Form
 	 */
 	public $form;
 
@@ -43,7 +42,7 @@ class SOF_Pledgeball_Form_Pledge_Info {
 	 *
 	 * @since 1.1
 	 * @access private
-	 * @var string $meta_key The backup meta key name.
+	 * @var string
 	 */
 	private $backup_key = '_sof_pledge_backup_cache';
 
@@ -58,7 +57,7 @@ class SOF_Pledgeball_Form_Pledge_Info {
 
 		// Store reference to Plugin object.
 		$this->plugin = $form->plugin;
-		$this->form = $form;
+		$this->form   = $form;
 
 		// Init when this form class is loaded.
 		add_action( 'sof_pledgeball/form/init', [ $this, 'initialise' ] );
@@ -183,7 +182,7 @@ class SOF_Pledgeball_Form_Pledge_Info {
 		*/
 
 		// Get info.
-		$event_count = count( $metabox['args'] );
+		$event_count  = count( $metabox['args'] );
 		$pledge_count = 0;
 		foreach ( $metabox['args'] as $event_id => $stats ) {
 			$pledge_count = $pledge_count + $stats['count'];
@@ -192,7 +191,7 @@ class SOF_Pledgeball_Form_Pledge_Info {
 		// Build info.
 		$info = sprintf(
 			/* translators: 1: The number of pledges, 2: The number of events. */
-			__( 'There are %1$s Pledges in %2$s Events.', 'sof-pledgeball' ),
+			esc_html__( 'There are %1$s Pledges in %2$s Events.', 'sof-pledgeball' ),
 			'<span class="sof-pledge-count">' . $pledge_count . '</span>',
 			'<span class="sof-event-count">' . $event_count . '</span>'
 		);
@@ -204,7 +203,7 @@ class SOF_Pledgeball_Form_Pledge_Info {
 
 				$data[] = sprintf(
 					/* translators: %s: The title of the event */
-					__( '%s No pledges recorded', 'sof-pledgeball' ),
+					esc_html__( '%s No pledges recorded', 'sof-pledgeball' ),
 					'<span style="display: inline-block; min-width: 200px; margin-right: 5px; font-weight: bold;">' . $stats['title'] . '</span>',
 					$stats['kgCO2']
 				);
@@ -212,10 +211,12 @@ class SOF_Pledgeball_Form_Pledge_Info {
 			} else {
 
 				$data[] = sprintf(
-					/* translators: 1: The title of the event, 2: The amount of savings pledged, 2: The number of pledges. */
-					__( '%1$s %2$s kgCO<sub>2</sub>e pledged (Pledges: %3$s)', 'sof-pledgeball' ),
+					/* translators: 1: Title of the event, 2: Amount of savings pledged, 3: Opening sub tag, 4: Closing sub tag, 5: Number of pledges. */
+					esc_html__( '%1$s %2$s kgCO%3$s2%4$se pledged (Pledges: %5$s)', 'sof-pledgeball' ),
 					'<span style="display: inline-block; min-width: 200px; margin-right: 5px; font-weight: bold;">' . $stats['title'] . '</span>',
 					$stats['kgCO2'],
+					'<sub>',
+					'</sub>',
 					$stats['count']
 				);
 
@@ -254,13 +255,13 @@ class SOF_Pledgeball_Form_Pledge_Info {
 
 		// Get Events with meta.
 		$query = [
-			'post_type' => 'event',
-			'post_status' => 'publish',
-			'no_found_rows' => true,
+			'post_type'      => 'event',
+			'post_status'    => 'publish',
+			'no_found_rows'  => true,
 			'posts_per_page' => -1,
 			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
-			//'meta_key' => $this->backup_key,
-			//'meta_compare' => 'EXISTS',
+			// 'meta_key' => $this->backup_key,
+			// 'meta_compare' => 'EXISTS',
 		];
 
 		// The query.
@@ -277,141 +278,138 @@ class SOF_Pledgeball_Form_Pledge_Info {
 		] );
 		*/
 
+		// Do not reset query when there are no Events.
+		if ( ! $events->have_posts() ) {
+			return $info;
+		}
+
 		// Get all non-unique items from post meta.
-		if ( $events->have_posts() ) {
+		while ( $events->have_posts() ) {
 
-			while ( $events->have_posts() ) {
+			$events->the_post();
+			$event_id = get_the_ID();
 
-				$events->the_post();
-				$event_id = get_the_ID();
+			// Init Event Pledge total.
+			$event_kgCO2_total = 0;
 
-				// Init Event Pledge total.
-				$event_kgCO2_total = 0;
+			// Try and get the Pledges for this Event.
+			$data = $this->get_pledges_by_event_id( $event_id );
 
-				// Try and get the Pledges for this Event.
-				$data = $this->get_pledges_by_event_id( $event_id );
+			// Show when there are no Pledges.
+			if ( empty( $data ) ) {
+				$info[ get_the_ID() ] = [
+					'title' => get_the_title(),
+					'kgCO2' => 0,
+					'count' => 0,
+				];
+				continue;
+			}
 
-				// Show when there are no Pledges.
-				if ( empty( $data ) ) {
-					$info[ get_the_ID() ] = [
-						'title' => get_the_title(),
-						'kgCO2' => 0,
-						'count' => 0,
-					];
-					continue;
-				}
+			/*
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			$this->plugin->log_error( [
+				'method' => __METHOD__,
+				'data' => $data,
+				//'backtrace' => $trace,
+			] );
+			*/
+
+			// Try and get ISO Country Code for this Event.
+			$country_code = $this->get_country_code_by_event_id( $event_id );
+
+			// Get the Pledge definitions for this Event.
+			$pledge_definitions = $this->form->pledge_definitions_get( $event_id, $country_code );
+			if ( empty( $pledge_definitions ) ) {
+				continue;
+			}
+
+			/*
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			$this->plugin->log_error( [
+				'method' => __METHOD__,
+				'pledge_definitions' => $pledge_definitions,
+				//'backtrace' => $trace,
+			] );
+			*/
+
+			// Calculate total pledged.
+			foreach ( $data as $pledge ) {
 
 				/*
 				$e = new \Exception();
 				$trace = $e->getTraceAsString();
 				$this->plugin->log_error( [
 					'method' => __METHOD__,
-					'data' => $data,
+					'pledge' => $pledge,
 					//'backtrace' => $trace,
 				] );
 				*/
 
-				// Try and get ISO Country Code for this Event.
-				$country_code = $this->get_country_code_by_event_id( $event_id );
+				// Init Pledge total.
+				$pledge_kgCO2_total = 0;
 
-				// Get the Pledge definitions for this Event.
-				$pledge_definitions = $this->form->pledge_definitions_get( $event_id, $country_code );
-				if ( empty( $pledge_definitions ) ) {
+				// Sanity check.
+				if ( empty( $pledge['pledges'] ) ) {
 					continue;
 				}
 
-				/*
-				$e = new \Exception();
-				$trace = $e->getTraceAsString();
-				$this->plugin->log_error( [
-					'method' => __METHOD__,
-					'pledge_definitions' => $pledge_definitions,
-					//'backtrace' => $trace,
-				] );
-				*/
+				foreach ( $pledge['pledges'] as $choice ) {
 
-				// Calculate total pledged.
-				foreach ( $data as $pledge ) {
+					// Get the KgC02 value for each choice.
+					$kgCO2         = 0;
+					$pledge_number = (int) $choice['pledgenumber'];
+					if ( ! empty( $pledge_definitions[ $pledge_number ]->KgCO2e ) ) {
+						if ( '-1' !== $pledge_definitions[ $pledge_number ]->KgCO2e ) {
+							$kgCO2 = (float) $pledge_definitions[ $pledge_number ]->KgCO2e;
+						}
+					}
 
 					/*
 					$e = new \Exception();
 					$trace = $e->getTraceAsString();
 					$this->plugin->log_error( [
 						'method' => __METHOD__,
-						'pledge' => $pledge,
+						'choice' => $choice,
+						'kgCO2' => $kgCO2,
 						//'backtrace' => $trace,
 					] );
 					*/
 
-					// Init Pledge total.
-					$pledge_kgCO2_total = 0;
-
-					// Sanity check.
-					if ( empty( $pledge['pledges'] ) ) {
-						continue;
-					}
-
-					foreach ( $pledge['pledges'] as $choice ) {
-
-						// Get the KgC02 value for each choice.
-						$kgCO2 = 0;
-						$pledge_number = (int) $choice['pledgenumber'];
-						if ( ! empty( $pledge_definitions[ $pledge_number ]->KgCO2e ) ) {
-							if ( $pledge_definitions[ $pledge_number ]->KgCO2e != '-1' ) {
-								$kgCO2 = (float) $pledge_definitions[ $pledge_number ]->KgCO2e;
-							}
-						}
-
-						/*
-						$e = new \Exception();
-						$trace = $e->getTraceAsString();
-						$this->plugin->log_error( [
-							'method' => __METHOD__,
-							'choice' => $choice,
-							'kgCO2' => $kgCO2,
-							//'backtrace' => $trace,
-						] );
-						*/
-
-						$event_kgCO2_total += $kgCO2;
-
-					}
+					$event_kgCO2_total += $kgCO2;
 
 				}
 
-				/*
-				$e = new \Exception();
-				$trace = $e->getTraceAsString();
-				$this->plugin->log_error( [
-					'method' => __METHOD__,
-					'event_kgCO2_total' => $event_kgCO2_total,
-					//'backtrace' => $trace,
-				] );
-				*/
-
-				// Add data to return array.
-				$info[ get_the_ID() ] = [
-					'title' => get_the_title(),
-					'kgCO2' => $event_kgCO2_total,
-					'count' => count( $data ),
-				];
-
 			}
 
-		} else {
+			/*
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			$this->plugin->log_error( [
+				'method' => __METHOD__,
+				'event_kgCO2_total' => $event_kgCO2_total,
+				//'backtrace' => $trace,
+			] );
+			*/
 
-			// Do not reset query.
-			return $info;
+			// Add data to return array.
+			$info[ get_the_ID() ] = [
+				'title' => get_the_title(),
+				'kgCO2' => $event_kgCO2_total,
+				'count' => count( $data ),
+			];
 
 		}
-
 
 		// Reset query.
 		wp_reset_postdata();
 
 		// Also requires manual emptying of post.
 		global $post;
+		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		$GLOBALS['post'] = null;
+		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		$$post = null;
 
 		/*
