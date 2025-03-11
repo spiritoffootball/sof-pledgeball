@@ -181,8 +181,8 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 		$build = [];
 		foreach ( $pledges as $pledge ) {
 
-			$input = '<input type="checkbox" class="pledge_checkbox" name="pledgeball_ids[]" id="pledgeball_id_' . esc_attr( $pledge->Number ) . '" value="' . esc_attr( $pledge->Number ) . '">';
-			$label = '<label for="pledgeball_id_' . esc_attr( $pledge->Number ) . '">' . esc_html( $pledge->Description ) . '</label>';
+			$input = '<input type="checkbox" class="pledge_checkbox" name="pledgeball_ids[]" id="pledgeball_id_' . esc_attr( $pledge->number ) . '" value="' . esc_attr( $pledge->number ) . '">';
+			$label = '<label for="pledgeball_id_' . esc_attr( $pledge->number ) . '">' . esc_html( $pledge->description ) . '</label>';
 
 			$saving = '';
 			if ( ! empty( $pledge->KgCO2e ) && '-1' !== $pledge->KgCO2e ) {
@@ -204,11 +204,11 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 			}
 
 			$context = '';
-			if ( ! empty( $pledge->UsefulURL ) ) {
-				$context_array = explode( ' ', $pledge->UsefulURL );
+			if ( ! empty( $pledge->usefulurl ) ) {
+				$context_array = explode( ' ', $pledge->usefulurl );
 				$context_count = count( $context_array );
 				if ( 1 === $context_count ) {
-					$context .= ' <span>(<a href="' . esc_url( $pledge->UsefulURL ) . '" target="_blank">' . __( 'More information', 'sof-pledgeball' ) . '</a>)</span>';
+					$context .= ' <span>(<a href="' . esc_url( $pledge->usefulurl ) . '" target="_blank">' . __( 'More information', 'sof-pledgeball' ) . '</a>)</span>';
 				} else {
 					$context .= ' <span>(' . esc_html__( 'More information', 'sof-pledgeball' );
 					$counter  = 1;
@@ -233,7 +233,7 @@ class SOF_Pledgeball_Form_Pledge_Submit {
 				$divider = '<br>';
 			}
 
-			$build[ esc_html( $pledge->Category ) ][] = $input . $label . $divider . $saving . $context;
+			$build[ esc_html( $pledge->category ) ][] = $input . $label . $divider . $saving . $context;
 
 		}
 
